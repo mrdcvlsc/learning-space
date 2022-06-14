@@ -1,0 +1,5 @@
+filename will be saved as it is
+wget DIRECT_LINK_OF_FILE
+
+set a new filename
+wget -cO - DIRECT_LINK_OF_FILE > SAVE_AS_FILENAME

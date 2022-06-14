@@ -1,0 +1,12 @@
+REACT
+
+// mobile development (react native)
+
+	npm install -g expo-cli
+	expo init YourApp
+	expo start
+
+// webappliactions (reactjs)
+
+	npx create-react-app
+	npx start 
