@@ -35,11 +35,11 @@ Enables serving static files, like html, css, and javascript to clients.
     // this also sets a root path where,
     // all the static files is located
     fastify.register(fastifyStatic, {
-    root: path.join(__dirname, '/static-folder')
+      root: path.join(__dirname, '/static-folder')
     });
 
     // serve the file to the clients
     fastify.get('/', (req,res)=>{
-    res.sendFile('static-form.html');
+      res.sendFile('static-form.html');
     });
     ```
