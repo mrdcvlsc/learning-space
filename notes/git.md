@@ -15,6 +15,16 @@ git config --global --unset user.email
 git config -l
 ```
 
+**Cache the next git user and password**
+```
+git config --global credential.helper cache
+```
+
+**Unset user and password cache credentials**
+```
+git config --global --unset credential.helper
+```
+
 **Display status of current branch**
 ```
 git status
