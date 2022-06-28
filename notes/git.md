@@ -1,3 +1,20 @@
+**Set User and Email**
+```
+git config --global user.name "yourUserName"
+git config --global user.email "yourEmail@whatever.com"
+```
+
+**Unset global config variables**
+```
+git config --global --unset user.name
+git config --global --unset user.email
+```
+
+**Display Global Configs Variables**
+```
+git config -l
+```
+
 **Display status of current branch**
 ```
 git status
