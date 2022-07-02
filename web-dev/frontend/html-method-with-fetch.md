@@ -2,11 +2,24 @@
 
 For more detailed information, access the MDN documentation for **[fetch() API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)**.
 
+- **Extracting Responses**
+    
+    Get the value of a response from a ```fetch()``` call.
+    
+    ```js
+    let response = await fetch('/records');
+    let data = await response.json();
+    ```
+
 - **Get Request**
 
     The get request is the same as inputing a URL in the browser, or redirecting to a link or another endpoint.
 
     It could contain parameter values that will sent in the backend, either supply it with **[Request Query Parameters](../backend/fastify/f03-routing/basics.md)** or just **[Request Parameters](../backend/fastify/f03-routing/basics.md)**.
+    
+    If not specified, the ```fetch()``` api will use a **GET** request by default.
+    ```js
+    fecth('/getEndPoint');
 
 - **Post Request**
 
