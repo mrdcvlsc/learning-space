@@ -1,56 +1,97 @@
-**Set User and Email**
-```
-git config --global user.name "yourUserName"
-git config --global user.email "yourEmail@whatever.com"
-```
+## Git User
 
-**Unset global config variables**
-```
-git config --global --unset user.name
-git config --global --unset user.email
-```
+- **Set User and Email**
+  ```
+  git config --global user.name "yourUserName"
+  git config --global user.email "yourEmail@whatever.com"
+  ```
 
-**Display Global Configs Variables**
-```
-git config -l
-```
+- **Cache the next git user and password**
+  ```
+  git config --global credential.helper cache
+  ```
 
-**Cache the next git user and password**
-```
-git config --global credential.helper cache
-```
+- **Unset user and password cache credentials**
+  ```
+  git config --global --unset credential.helper
+  ```
 
-**Unset user and password cache credentials**
-```
-git config --global --unset credential.helper
-```
+## Git Variables
 
-**Display status of current branch**
-```
-git status
-```
+- **Unset global config variables**
+  ```
+  git config --global --unset user.name
+  git config --global --unset user.email
+  ```
 
-**Display local branch**
-```
-git branch
-```
+- **Display Global Configs Variables**
+  ```
+  git config -l
+  ```
 
-**Display all branch even on remote repository**
-```
-git branch -a
-```
+## Branches
 
-**Switch to a branch**
-```
-git checkout NewBranchName
-```
+- **Display status of current branch**
+  ```
+  git status
+  ```
 
-**Create a new branch using the current branch you're currently in**
-```
-git checkout -b NewBranchName
-```
+- **Display local branch**
+  ```
+  git branch
+  ```
 
-**Local changes are reapplied on top of the remote changes.**
+- **Display all branch even on remote repository**
+  ```
+  git branch -a
+  ```
+
+- **Switch to a branch**
+  ```
+  git checkout NewBranchName
+  ```
+
+- **Create a new branch using the current branch you're currently in**
+  ```
+  git checkout -b NewBranchName
+  ```
+
+## Pulls
+
+- **Remote changes are applied**
+  ```
+  git pull
+  ```
+
+- **Local changes are reapplied on top of the remote changes.**
+  ```
+  git pull --rebase
+  ```
+  
+## Commits
+
+- **Go back to a certain commit, this will make the `commit hash` as the current head, and remove anything above it**
+  ```
+  git reset --hard <commit hash>
+  ```
+
+## Stages
+
+- **Stage (add) the new edited files**
+  ```
+  git add <files>...
+  ```
+
+- **Unstage (remove) the added files when the git `add` command was used**
+  ```
+  git restore --staged <file>...
+  ```
+  
+# Dot Character
+use to denote `<all files>` instead of just selecting a specific file name.
+
+Example, to add all changes:
+
 ```
-git pull --rebase
+git add .
 ```
