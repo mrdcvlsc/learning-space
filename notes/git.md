@@ -86,7 +86,20 @@
   ```
   git restore --staged <file>...
   ```
-  
+
+## Remote
+
+- **Show remote repository**
+  ```
+  git remote
+  git remote -v
+  ```
+
+- **Add a remote repository**
+  ```
+  git remote <name> <url>
+  ```
+
 # Dot Character
 use to denote `<all files>` instead of just selecting a specific file name.
 
