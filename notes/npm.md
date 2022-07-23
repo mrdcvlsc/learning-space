@@ -1,3 +1,8 @@
+### Clean Install (mostly use for CI)
+```
+npm ci
+```
+
 ### Install with development
 ```
 npm install
