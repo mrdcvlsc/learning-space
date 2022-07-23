@@ -75,6 +75,11 @@
   git reset --hard <commit hash>
   ```
 
+- **After reseting to a certain commit, you might want to force push it to a repo if that repo also contains all the commits ahead in your local repo"
+  ```
+  git push --force
+  ```
+
 ## Stages
 
 - **Stage (add) the new edited files**
