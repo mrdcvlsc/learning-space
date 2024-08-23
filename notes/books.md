@@ -15,3 +15,28 @@
 6. **Clean Architecture** (Robert C. Martin | Uncle Bob) - _About software architecture with a focus on Clean Code (#4)._
 
 7. **SFML Game Development** - _Game development with a slightly older version of C++, but the concepts can still be applied to modern C++._
+
+## Physics
+
+- Introduction to Classical Electrodynamics - Griffith
+
+## Fiction
+
+**Remembrance of Earth's Past**
+
+1. The Three-Body Problem
+2. The Dark Forest
+3. Death's End
+
+**Foundation Series**
+
+1. Foundation
+2. Foundation & Empire
+3. The Second Foundation
+
+**Robert Langdon Adventures**
+
+1. The Da Vinci Code
+2. Angels & Demons
+3. Inferno
+4. The Lost Symbol
