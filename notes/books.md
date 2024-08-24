@@ -1,5 +1,9 @@
 # Books
 
+## Programming Languages
+
+- **Compilers: principles, techniques, and tools** - go to book when studying about compilers
+
 ## Software Engineering
 
 1. **Design Patterns: Elements of Reusable Object-Oriented Software** (Gang of Four) - _The first/original book that documents software design patterns in OOP. This is more like a diehard documentation than an easy going tutorial._
