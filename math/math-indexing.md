@@ -107,3 +107,28 @@ $M_{i,j} = A_{(i \cdot w + j)}$
 - **by n cell**
 
     $M_{i-n,j+n} = A_{((i-n) \cdot w+j+n)} = A_{(i \cdot w+j)-(n \cdot w)+n} =  A_{index-(n \cdot w)+n}$
+
+# Indexing Combined Arrays
+
+1. Say we have an array `A` and array `B`
+2. We created an array `C` which is the combination of both `A` and `B` elements
+
+```py
+C = []
+i = 0
+while i < len(A):
+   j = 0
+   while j < len(B):
+       C.append(A[i] + B[j])
+       j += 1
+   i += 1
+```
+   
+Q1: How can we know the index of array `A` and array `B` that is used to create the element in the given index `i` of the Array `C`. **Answer:**
+```py
+def reverse_indexing(C_idx):
+    A_idx = (C_idx // len(B))
+    B_idx = (C_idx %  len(B))
+    return (A_idx, B_idx)
+```
+    
