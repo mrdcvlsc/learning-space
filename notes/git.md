@@ -90,23 +90,16 @@
 
 - **Create a new EMPTY branch**
 
-```bash
-git switch --orphan <new-branch-name>
-git commit --allow-empty -m "New empty branch"
-git push -u origin <new-branch-name>
-```
-  
+  ```bash
+  git switch --orphan <new-branch-name>
+  git commit --allow-empty -m "new empty branch"
+  git push -u origin <new-branch-name>
+  ```
+    
 - **Download a branch from a remote**
   
   ```bash
   git checkout -t <remote-name>/<branch-name>
-  ```
-  
-- **Stash some specific file changes from another branch**
-  
-  ```bash
-  git checkout <main-branch>
-  git checkout <another-branch> -- <file>
   ```
   
 - **Delete branch locally**
@@ -210,16 +203,19 @@ git push -u origin <new-branch-name>
 ## Stages
 
 - **Stage (add) the new edited files**
+- 
   ```bash
   git add <files>...
   ```
 
 - **Unstage (remove) the added files when the git `add` command was used**
+- 
   ```bash
   git restore --staged <file>...
   ```
   
 - **Show staged file changes**
+- 
   ```bash
   git diff --cached
   ```
@@ -227,41 +223,46 @@ git push -u origin <new-branch-name>
 ## Remote
 
 - **Show remote repository `<remote-name>` and `<url>`**
+- 
   ```bash
   git remote
   git remote -v
   ```
 
 - **Add a remote repository**
+- 
   ```bash
   git remote add <remote-name> <url>
   ```
 
 - **Remove a remote repository**
+- 
   ```bash
   git remote remove <remote-name>
   ```
 
 # Submodules
 
-**add a submodule in a repo**
-```bash
-git submodule add <url>
-```
+- **add a submodule in a repo**
+- 
+  ```bash
+  git submodule add <url>
+  ```
 
-**after cloning a repo with submodules**
+- **after cloning a repo with submodules**
+  
+  ```bash
+  git submodule update --init --recursive
+  ```
 
-```bash
-git submodule update --init --recursive
-```
+- **updating a repo with the latest changes to submodules**
 
-**updating a repo with the latest changes to submodules**
-
-```bash
-git submodule update --recursive --remote
-```
+  ```bash
+  git submodule update --recursive --remote
+  ```
 
 # Dot Character
+
 use to denote `<all files>` instead of just selecting a specific file name.
 
 Example, to add all changes:
@@ -295,44 +296,93 @@ git add .
 
 # Tags
 
-**List all of the tags**
+- **List all of the tags**
 
-```bash
-git tag -l
-```
+  ```bash
+  git tag -l
+  ```
 
-**Delete a local Git tag**
+- **Delete a local Git tag**
 
-```bash
-git tag -d <tag-name>
-```
+  ```bash
+  git tag -d <tag-name>
+  ```
 
-**Create a local Git tag**
+- **Create a local Git tag**
 
-```bash
-git tag <tag-name>
-```
+  ```bash
+  git tag <tag-name>
+  ```
 
-**Create a local annotated tag**
+- **Create a local annotated tag**
 
-```bash
-git tag <tag-name> -a
-```
+  ```bash
+  git tag <tag-name> -a
+  ```
 
-**Push all local tag**
+- **Push all local tag**
 
-```bash
-git push <remote-name> --tags
-```
+  ```bash
+  git push <remote-name> --tags
+  ```
 
-**Push a specific local tag**
+- **Push a specific local tag**
 
-```bash
-git push <remote-name> <tag-name>
-```
+  ```bash
+  git push <remote-name> <tag-name>
+  ```
 
-**Checkout a tag**
+- **Checkout a tag**
 
-```bash
-git checkout tags/<tag-name>
-```
+  ```bash
+  git checkout tags/<tag-name>
+  ```
+
+## Stash
+
+Reminder: [git stash is not branch specific](https://stackoverflow.com/questions/20526355/is-git-stash-branch-specific-or-for-the-whole-repository) but for the whole repo.
+
+- **Stash changes for later use**
+
+  _untracked files not included_
+
+  ```bash
+  git stash
+  ```
+
+- **Stash changes and untracked files**
+
+  ```bash
+  git stash -u
+  ```
+
+- **Re-apply/Get back changes inside the stash**
+
+  ```bash
+  git stash pop
+  ```
+
+- **Working with multiple stashes: Show Stash Stack**
+  
+  _yes stashed changes is stored in a stack, the command
+  below will list all of the stashes along with it's index._
+
+  ```bash
+  git stash list
+  ```
+
+- **Working with multiple stashes: Get a Specific Stash**
+
+  ```bash
+  git stash apply stash@{<stash-index-number>}
+  git stash drop stash@{<stash-index-number>}
+  // or
+  git stash pop stash@{<stash-index-number>}
+  ```
+
+- **Stash some specific file changes from another branch**
+  
+  ```bash
+  git checkout <main-branch>
+  git checkout <another-branch> -- <file>
+  ```
