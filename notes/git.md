@@ -8,16 +8,19 @@
   ```
 
 - **Cache the next git user and password (in-memory)**
+  
   ```bash
   git config --global credential.helper cache --timeout=<seconds>
   ```
  
 - **Cache the next git user and password (disk)**
+  
   ```bash
   git config --global credential.helper store
   ```
 
 - **Unset user and password cache credentials**
+  
   ```bash
   git config --global --unset credential.helper
   ```
@@ -31,11 +34,13 @@
   ```
 
 - **Display Global Configs Variables**
+  
   ```bash
   git config -l
   ```
   
 - **Edit Git Global Config Variables**
+  
   ```bash
   git config --global --edit
   ```
@@ -43,11 +48,13 @@
 ## Branches
 
 - **Display status of current branch**
+  
   ```bash
   git status
   ```
 
 - **Display local branch**
+  
   ```bash
   git branch
   ```
@@ -56,13 +63,21 @@
   ```bash
   git branch -a
   ```
+  
+- **Push all branches**
+  
+  ```bash
+  git push <remote-name> --all
+  ```
 
 - **Switch to a branch**
+  
   ```bash
   git checkout NewBranchName
   ```
 
 - **Create a new branch using the current branch you're currently in**
+  
   ```bash
   git checkout -b NewBranchName
   ```
@@ -70,23 +85,25 @@
 - **Create a new branch from a commit**
   ```bash
   git log
-  git branch <branch name> <identifier>
+  git branch <branch-name> <identifier>
   ```
 
 - **Create a new EMPTY branch**
 
 ```bash
-git switch --orphan <new branch>
+git switch --orphan <new-branch-name>
 git commit --allow-empty -m "New empty branch"
-git push -u origin <new branch>
+git push -u origin <new-branch-name>
 ```
   
 - **Download a branch from a remote**
+  
   ```bash
   git checkout -t <remote-name>/<branch-name>
   ```
   
 - **Stash some specific file changes from another branch**
+  
   ```bash
   git checkout <main-branch>
   git checkout <another-branch> -- <file>
@@ -94,8 +111,8 @@ git push -u origin <new branch>
   
 - **Delete branch locally**
   ```bash
-  git branch -d <branch_name>
-  git branch -D <branch_name>
+  git branch -d <branch-name>
+  git branch -D <branch-name>
   ```
   - The `-d` option is an alias for `--delete`, which only deletes the branch if it has already been fully merged in its upstream branch.
   - The `-D` option is an alias for `--delete --force`, which deletes the branch "irrespective of its merged status." [Source: man git-branch]
@@ -209,7 +226,7 @@ git push -u origin <new branch>
 
 ## Remote
 
-- **Show remote repository**
+- **Show remote repository `<remote-name>` and `<url>`**
   ```bash
   git remote
   git remote -v
@@ -217,12 +234,12 @@ git push -u origin <new branch>
 
 - **Add a remote repository**
   ```bash
-  git remote add <name> <url>
+  git remote add <remote-name> <url>
   ```
 
 - **Remove a remote repository**
   ```bash
-  git remote remove <name>
+  git remote remove <remote-name>
   ```
 
 # Submodules
@@ -287,35 +304,35 @@ git tag -l
 **Delete a local Git tag**
 
 ```bash
-git tag -d <tagname>
+git tag -d <tag-name>
 ```
 
 **Create a local Git tag**
 
 ```bash
-git tag <tagname>
+git tag <tag-name>
 ```
 
 **Create a local annotated tag**
 
 ```bash
-git tag <tagname> -a
+git tag <tag-name> -a
 ```
 
 **Push all local tag**
 
 ```bash
-git push origin --tags
+git push <remote-name> --tags
 ```
 
 **Push a specific local tag**
 
 ```bash
-git push origin <tag>
+git push <remote-name> <tag-name>
 ```
 
 **Checkout a tag**
 
 ```bash
-git checkout tags/<tag_name>
+git checkout tags/<tag-name>
 ```
