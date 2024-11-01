@@ -168,37 +168,130 @@
   // <remote-name> and <branch-name> are optional
   ```
 
-- **Edit a history of future commits from a root commit**
+- **Edit the history of the next following commits after a selected base commit**
   
-  This will prompt an interactive shell where you can edit
-  future commits after the chosen starting root
-  `<commit-hash>` until to the current `HEAD` commit. 
+  This will prompt an interactive shell where you can edit **all (up to `HEAD` commit)**
+  of the **following commits** after the chosen base commit, the shell will let you pick
+  which commits do you want to edit.
+
+  _the `<base-commit-hash>` is not included_
+
   ```bash
-  git rebase -i <commit-hash>
+  git rebase -i <base-commit-hash>
   ```
 
-  After entering the command above it will revert your files
-  to the state of the commit above the given `<commit-hash>`.
+  After entering the command above and picking the actions you want to do for each commits,
+  it will **reset** your files to the state of the **next** commit (`<next-commit-hash>`)
+  after the `<base-commit-hash>` that was given.
 
-  Then you can apply the changes to the files during that 
-  commit, then add those changes using:
+  Now you can edit the `<next-commit-hash>` by amending changes in either
+  or both the code or commit message (see amend section):
+
+  1. If you only edited the commit message you will not have any
+     problems after using `git rebase --continue`.
+     
+  2. But if you edited files or code during amending you might encounter (but not everytime)
+     conflicts after using `git rebase --continue` so you will need to fix it.
+
+- **Fixing conflict after `rebase --continue`**
+
+  After using `git rebase --continue` if there are conflicts, it will show what
+  is the next incoming commit that cannot be applied due to differences in the file/code.
+
+  example:
+
+  ```bash
+  Auto-merging text.txt
+  CONFLICT (content): Merge conflict in text.txt
+  error: could not apply 7928385... Some Random Commit Message Of Commit 7928385
+  hint: Resolve all conflicts manually, mark them as resolved with
+  hint: "git add/rm <conflicted_files>", then run "git rebase --continue".
+  hint: You can instead skip this commit: run "git rebase --skip".
+  hint: To abort and get back to the state before "git rebase", run "git rebase --abort".
+  Could not apply 7928385... Some Random Commit Message Of 7928385
+  ```
+
+  At this point you need to edit the source code or files where the conflict happens, one
+  way to see the code where the conflict occured is by using `git diff` :
+
+  ```bash
+  git --diff
+
+  # output
+  
+  diff --cc text.txt
+  index 53681c6,13e34e5..0000000
+  --- a/text.txt
+  +++ b/text.txt
+  @@@ -1,3 -1,4 +1,8 @@@
+    initial commit
+    1st first additional commit
+  ++<<<<<<< HEAD
+   +2nd second additional commit corrected line of code (amended)
+  ++=======
+  + 2nd second additional change - a wrong line of code (initially wrong code)
+  + 3rd
+  ++>>>>>>> 7928385 (Some Random Commit Message Of 7928385)
+  ```
+
+  The above output is how conflicts are structured/annotated in the source code, here you
+  will be able to see the structure of the conflicting code in the section of the **incoming
+  changes** `7928385 (Some Random Commit Message Of 7928385)` below the `++=======` line.
+  Above it is the auto-merge's new **current changes** which are the conflicting code that
+  arised due to our amends earlier.
+
+  Some IDE and Editors will have a quick button to either:
+  
+  - `Accept Only The Current Changes` - (`+<<<<<<<`)
+  - `Accept Only The Incoming Changes` - (`++>>>>>>>`)
+  - `Accept Both The Current and Incoming Changes`
+
+  But you can always edit it youself manually, for example:
+
+  **Opened From Text Editor: From:**
+  
+  ```bash
+  <<<<<<< HEAD
+  2nd second additional commit corrected line of code (amended)
+  =======
+  2nd second additional change - a wrong line of code (initially wrong code)
+  3rd
+  >>>>>>> 7928385 (3rd)
+  ```
+
+  **Opened From Text Editor: Fixed Manually (Edited and Saved):**
+
+  Just remove the conflict annotations and choose which line of code
+  you want to keep from the incoming change `7928385`.
+
+  ```bash
+  2nd second additional commit corrected line of code (amended)
+  3rd
+  ```
+
+  In short, you just want to fix the code to look the way you want
+  after committing `7928385`, or how you want the code to appear as
+  the result of committing `7928385`.
+
+  After that just stage the fix-changes you applied.`
 
   ```bash
   git add .
   ```
 
-  After editing the changes in that commit you can continue the rebase step with:
+  Then after staging the fix-changes can continue the rebase step with:
 
   ```bash
   git rebase --continue
   ```
 
-  If there are conflicts after continue, fix it then repeat 
-  the `git add .` and `git rebase --continue` until you reach
-  the `HEAD` commit. 
+  If there are more conflicts ahead just repeat this process.
 
-  **Note:** the given `<commit-hash>` is not included when 
-  editing.
+  These following commands might help you to get more info when fixing conflicts:
+
+  - `git diff` and `git diff --cached`
+  - `git status`
+  - `git log`
 
 ## Stages
 
