@@ -1,5 +1,14 @@
 # **CMAKE GENERATOR EXPRESSION**
 
+### Get Target Build Directory
+
+Usually targets are the first argument of `add_library` and `add_executable`
+(maybe `ExternalProject_Add` and `FetchContent_Declare` too)
+
+```cmake
+$<TARGET_FILE_DIR:TARGET_NAME>
+```
+
 ### Equality
 
 Returns `TRUE` if arguments are equal and `FALSE` if not.
