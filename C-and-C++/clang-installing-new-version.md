@@ -1,5 +1,10 @@
 # installing New Clang Version In Ubuntu
 
+In some cases, a simple `update` and `upgrade` is sufficient.
+However sometimes with Clang, running `update` and `upgrade` might not
+install the latest version. This guide is for those situations
+where additional steps are needed to ensure you have the latest Clang version.
+
 ### Remove old Clang installations (depending on the version)
 
 ```bash
