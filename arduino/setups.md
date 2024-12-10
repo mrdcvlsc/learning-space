@@ -1,5 +1,12 @@
 # Setting Up Arduino/ESP32/ESP8266/ETC.
 
+## ESP32 Setup
+
+NOTE: **Libraries** and **Board Managers** are two different thing
+
+1. Install `esp32` by **Espressif Systems** in the board manager.
+2. `Tools` > `Board` > `esp32` > Select `ESP32 Dev Module`.
+
 ## Allowing physical port in Ubuntu
 
 ```bash
