@@ -1,6 +1,4 @@
-// send text over bluetooth
-
-#include <BluetoothSerial.h>
+ #include <BluetoothSerial.h>
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
@@ -23,7 +21,12 @@ void loop() {
 
     String msg = Serial.readString();
     esp32_bt.println(msg);
-  } else {
-    Serial.println("Standby...");
+
+    Serial.println("Data Sent");
+  } else if (esp32_bt.available()) {
+    String receivedText = esp32_bt.readString();
+
+    Serial.print("Received Data: ");
+    Serial.println(receivedText);
   }
 }
