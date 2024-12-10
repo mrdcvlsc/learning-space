@@ -17,6 +17,7 @@ void setup() {
 
 void loop() {
   if (Serial.available()) {
+    // send text through bluetooth
     Serial.println("Sending Data...");
 
     String msg = Serial.readString();
@@ -24,6 +25,7 @@ void loop() {
 
     Serial.println("Data Sent");
   } else if (esp32_bt.available()) {
+    // receive text through bluetooth
     String receivedText = esp32_bt.readString();
 
     Serial.print("Received Data: ");
