@@ -8,3 +8,21 @@ Where it enhances the clarity, SQL commands are preceded by the prompt `=>`, and
 
 An administrator is generally a person who is in charge of installing and running the server. A user could be anyone who is using, or wants to use, any part of the PostgreSQL system. These terms should not be interpreted too narrowly; this book does not have fixed presumptions about system administration procedures.
 
+## Listing Databases
+
+```bash
+postgres=# \l
+```
+
+## Connecting to Tables
+
+```bash
+postgres=# \c <table-name>
+```
+
+## Listing Tables in the Database
+
+```bash
+table-name=# \dt
+```
+
