@@ -4,12 +4,24 @@
 
 ```bash
 service --status-all
+
+# show only the active ones
+service --status-all | grep '\[ + \]'
+
+# show onlt the inactive ones
+service --status-all | grep '\[ - \]'
 ```
 
 or use this command to get all system services (shows more information and services)
 
 ```bash
 systemctl list-units
+
+# show only the active ones
+systemctl list-units -a
+
+# show only the inactive ones
+systemctl list-units -a --state=inactive
 ```
 
 ### Check if a service is already running
