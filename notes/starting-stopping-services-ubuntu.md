@@ -1,5 +1,17 @@
 # Starting and Stopping Services in Ubuntu
 
+### Check the status of all user services (`+` active, `-` inactive)
+
+```bash
+service --status-all
+```
+
+or use this command to get all system services (shows more information and services)
+
+```bash
+systemctl list-units
+```
+
 ### Check if a service is already running
 
 ```bash
