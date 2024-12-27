@@ -142,7 +142,11 @@ REVOKE <permission_type> ON <table_name> FROM <user_name>;
 # \h GRANT
 ```
 
+## Connecting to Local Database
 
+```bash
+psql -U <user_name> -d <database_name> -h 127.0.0.1 -W
+```
 
 
 ### REFERENCES
