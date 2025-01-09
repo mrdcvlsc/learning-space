@@ -146,7 +146,9 @@
 
 - **Go back to a certain commit**
 
-  this will make the `commit hash` as the current head, and remove anything above it
+  this will make the `commit hash` as the current head, and remove anything above it,
+  the `--hard` flag will revert staged or working tree files back to a previous state.
+  
   ```bash
   git reset --hard <commit-hash>
   ```
