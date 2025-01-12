@@ -121,7 +121,45 @@
   ```bash
   git pull --rebase
   ```
-  
+## Diffs
+
+- **Shows current changes**
+
+```bash
+git diff
+```
+
+- **Shows difference between two branches or commits**
+
+```bash
+git diff A..B
+```
+
+- **Shows difference between two branches or commits while respecting the history**
+
+```bash
+git diff A...B
+```
+
+- **Difference of `..` and `...`**
+
+Since `A` is an older commit and `B` is a newer one, if we `diff` them with `..` and
+placed the `B` as the starting commit then `A` as the end commit, it will show the
+changes made as if `B` is the older commit then a is the newer one `A`.
+
+```bash
+git diff B..A
+```
+
+On the other hand if we `diff` with `...` and placed `B` as the starting commit and `A`
+as the end commit, it will not show anything because `...` only shows the changes made
+while respecting the history, and since `B` to `A` has no connection then there is nothing
+to display (note: only `A` to `B` has a connection).
+
+```bash
+git diff B...A
+```
+
 ## Commits
 
 - **Commit changes**
