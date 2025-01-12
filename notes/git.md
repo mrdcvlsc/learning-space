@@ -145,7 +145,7 @@ git diff A...B
 
 Since `A` is an older commit and `B` is a newer one, if we `diff` them with `..` and
 placed the `B` as the starting commit then `A` as the end commit, it will show the
-changes made as if `B` is the older commit then a is the newer one `A`.
+changes made as if `B` is the older commit then `A` is the newer one.
 
 ```bash
 git diff B..A
