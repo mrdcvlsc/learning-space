@@ -123,6 +123,12 @@
   ```
 ## Diffs
 
+- **Show changes in a commit
+
+```bash
+git show <commit-hash> --diff-merges=on
+```
+
 - **Shows current changes**
 
 ```bash
