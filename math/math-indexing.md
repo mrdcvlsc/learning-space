@@ -1,5 +1,17 @@
 # **The Math Of Indexing Arrays**
 
+### **Converting Indecies Of N Dimensional Arrays To 1-Dimension**
+
+$idx^{1D}_{2D} = (J \cdot i) + j$
+
+$idx^{1D}_{3D} = (K \cdot ((J \cdot i) + j)) + k$
+
+$idx^{1D}_{4D} = (L \cdot ((K \cdot ((J \cdot i) + j)) + k)) + l$
+
+This is recursive
+
+### Definitions
+
 The matrices here are assumed to be in the **Row Major Order**.
 
 - $A$ = array.
