@@ -135,6 +135,7 @@ If the output does not start with `l`, as shown below, it confirms this is the C
 ```bash
 sudo ln -s /usr/lib/llvm-19/bin/clang /usr/bin/clang 
 sudo ln -s /usr/lib/llvm-19/bin/clang /usr/bin/clang++
+sudo ln -s /usr/lib/llvm-19/bin/clangd /usr/bin/clangd
 ```
 
 ### Restart the PC, then verify the installation
