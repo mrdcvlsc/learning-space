@@ -74,7 +74,7 @@ sudo ./llvm.sh
 sudo ./llvm.sh <new-selected-version>
 
 # Example:
-sudo ./llvm.sh 17
+sudo ./llvm.sh 19
 ```
 
 ### Get the path of the installed Clang binary
@@ -83,46 +83,46 @@ sudo ./llvm.sh 17
 which clang-<new-selected-version>
 
 # Example:
-which clang-17
+which clang-19
 ```
 
 Output:
 
 ```bash
-/usr/bin/clang-17
+/usr/bin/clang-19
 ```
 
 ### Locate the main binary of the installed Clang using the output from `which`
 
 ```bash
-ls -l /usr/bin/clang-17
+ls -l /usr/bin/clang-19
 ```
 
 Output:
 
 ```bash
-lrwxrwxrwx 1 root root XX XXX XX XXXX /usr/bin/clang-17 -> ../lib/llvm-17/bin/clang
+lrwxrwxrwx 1 root root XX XXX XX XXXX /usr/bin/clang-19 -> ../lib/llvm-19/bin/clang
 ```
 
-This indicates the main binary path is `/usr/lib/llvm-17/bin/clang`.
+This indicates the main binary path is `/usr/lib/llvm-19/bin/clang`.
 
 ### Confirm the binary is the actual Clang executable
 
 ```bash
-ls -l /usr/lib/llvm-17/bin/clang
+ls -l /usr/lib/llvm-19/bin/clang
 ```
 
 If the output does not start with `l`, as shown below, it confirms this is the Clang main binary:
 
 ```bash
--rwxr-xr-x 1 root root XX XXX XX XXXX /usr/lib/llvm-17/bin/clang
+-rwxr-xr-x 1 root root XX XXX XX XXXX /usr/lib/llvm-19/bin/clang
 ```
 
 ### Create a new symbolic link for Clang
 
 ```bash
-sudo ln -s /usr/lib/llvm-17/bin/clang /usr/bin/clang 
-sudo ln -s /usr/lib/llvm-17/bin/clang /usr/bin/clang++
+sudo ln -s /usr/lib/llvm-19/bin/clang /usr/bin/clang 
+sudo ln -s /usr/lib/llvm-19/bin/clang /usr/bin/clang++
 ```
 
 ### Restart the PC, then verify the installation
