@@ -30,15 +30,27 @@ where additional steps are needed to ensure you have the latest Clang version.
 ### Remove old Clang installations (depending on the version)
 
 ```bash
-sudo apt-get purge llvm clang
+# find all clang packages still installed
+apt list --installed | grep llvm
 
-# Specifying the version may be better
-sudo apt-get purge llvm-<version> clang-<version>
+# find all llvm packages still installed
+apt list --installed | grep llvm
+
+# be careful when purging llvm packages and maybe clang,
+# because your OS might be dependent on some llvm packages,
+# if you see that the purge command will also remove a ton
+# of other packages, chances are that llvm is a package
+# dependency that you don't want to purge, so don't be quick
+# in entering `Y` (yes), read carefully.
+sudo apt-get purge <clang-or-llvm-packages>
+
+# I would suggest to don't use wildcard character (`*`) when purging
 
 # Example:
 sudo apt-get purge llvm-3.2 clang-3.2
 
-# remove old clang and llvm files
+# check if some files are still there remove old clang and llvm
+# files that are not a dependency if exist
 sudo rm -r /usr/lib/clang*
 sudo rm -r /usr/lib/llvm*
 sudo rm -r /usr/bin/clang*
