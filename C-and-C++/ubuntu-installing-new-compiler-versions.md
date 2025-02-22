@@ -42,6 +42,7 @@ sudo apt-get purge llvm-3.2 clang-3.2
 sudo rm -r /usr/lib/clang*
 sudo rm -r /usr/lib/llvm*
 sudo rm -r /usr/bin/clang*
+sudo rm -r /usr/bin/llvm*
 sudo rm -r /usr/include/clang*
 sudo rm -r /usr/include/llvm*
 
