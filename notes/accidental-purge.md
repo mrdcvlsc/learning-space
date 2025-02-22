@@ -1,7 +1,7 @@
 # Accidental Purge
 
 I recently accidentally purge a specific package in ubuntu that also removed other packages that depends on it,
-I quickly canceled the process when I found that it was removing OS specific packages, then I use the following
+I quickly canceled the process when I found that it was removing OS specific packages with `ctrl+z` (`ctrl+c` is not working), then I use the following
 commands below to try to bring back the purged packages.
 
 ```bash
