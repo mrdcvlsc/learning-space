@@ -158,6 +158,15 @@ we’ll use port 22 (SSH) as an example:
 sudo ufw allow from 203.0.113.0/24 to any port 22
 ```
 
+### Allow Subnets with specific protocol
+
+UFW rules default to allowing both TCP and UDP unless a protocol is
+explicitly defined. To restrict the rule to only TCP:
+
+```bash
+sudo ufw allow from 203.0.113.0/24 to any port 22 proto tcp
+```
+
 ### Connections to a Specific Network Interface
 
 If you want to create a firewall rule that only applies to a specific
