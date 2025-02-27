@@ -1,0 +1,5 @@
+- To enable "PSD Importer" refer to this documentation -> https://docs.unity3d.com/Packages/com.unity.2d.psdimporter@9.0/manual/index.html
+- To import PSD or PSB file, just drag the file to the Asset folders in Unity (For 2D Unity Templates).
+- Some older versions of Unity does not include the "PSD Importer" package by default when starting from a 2D template project, in this case you need to install it manually.
+
+-
