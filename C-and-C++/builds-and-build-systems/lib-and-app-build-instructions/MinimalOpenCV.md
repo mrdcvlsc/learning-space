@@ -198,7 +198,7 @@ cmake -S . -B build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUIL
 ```
 
 Be careful when disabling some modules, if one of it's dependencies are also disabled, cmake will automatically disable that modules itself, for example if we say `-DBUILD_opencv_bgsegm=ON` but we disabled one of the following modules `opencv_core`, `opencv_imgproc`, `opencv_video`, `opencv_calib3d, `WRAP`,  `python`, `java`, `objc`
-then `bgsegm` will be disabled too.
+then `bgsegm` will be disabled too. look for `ocv_define_module` and `ocv_add_module`
 
 to know which module depends on look for the `CMakeLists.txt` of each modules in the opencv_contrib https://github.com/opencv/opencv_contrib/tree/master/modules repository
  and the official opencv repository https://github.com/opencv/opencv/tree/4.x/modules
