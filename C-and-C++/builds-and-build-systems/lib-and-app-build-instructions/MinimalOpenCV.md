@@ -201,3 +201,4 @@ Be careful when disabling some modules, if one of it's dependencies are also dis
 then `bgsegm` will be disabled too.
 
 to know which module depends on look for the `CMakeLists.txt` of each modules in the opencv_contrib https://github.com/opencv/opencv_contrib/tree/master/modules repository
+ and the official opencv repository https://github.com/opencv/opencv/tree/4.x/modules
