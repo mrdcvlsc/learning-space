@@ -16,15 +16,20 @@
 
 `Alt + Enter` Select all occurences of Find match
 
+`Alt + ←` Go Back to last edit
+
+`Alt + →` Go Forward to next edit
+
+
+`Alt + ,` Go Back to previous cursor position
+
+`Alt + .` Go Forward to next cursor position (if available)
+
 ## File manipulation
 
 `Alt + ↑/↓` Move line up/down
 
 `Ctrl + ]/[` Indent/outdent line
-
-`Alt + ←` Go Back
-
-`Alt + →` Go Forward
 
 ## Formating
 
