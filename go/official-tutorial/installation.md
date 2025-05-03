@@ -21,6 +21,9 @@ Then you might need to close the terminal then open it again to refresh the path
 # tour - local served quick tutorial by examples
 # godoc - local served go module documentation
 go install golang.org/x/tools/cmd/...@latest
+
+# go language server
+go install golang.org/x/tools/gopls@latest
 ```
 
 # Go `tour`
