@@ -21,3 +21,7 @@
 4. uncheck the checkbox `Ancestors`
 5. check the checkbox `Framework listeners`
 6. It should show the event handler of the selected element
+
+## Tips
+
+1. Don't ignore the errors in the issues tab (this helped me solve many session cookie problems).
