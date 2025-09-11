@@ -5,7 +5,7 @@ so I don't have to recalculate it over and over again if I need it.
 > [!WARNING] 
 > Assumes $n$ and $m$ are integers and $m > 0$.
 >
-> Also the modulo operator `%` (symbol might be different in other programming language) for other languages might behave differently in how they treat negative values.
+> The modulo operator `%` (symbol might be different in other programming language) for other languages might behave differently in how they treat negative values.
 
 ## Chunk/Block Padding
 
