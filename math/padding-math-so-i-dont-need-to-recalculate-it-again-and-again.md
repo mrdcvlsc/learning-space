@@ -20,4 +20,9 @@ $m - (n \bmod m)$
 > [!NOTE]
 > when talking about arrays, $n$ is the current size of the array, $m - (n \bmod m)$ is the total elements to add, and $n^+$ is the new size of the padded array.
 >
-> also if your array is already divisible to the block size $m$, this equation will still give you the next number $n^+ = n + m - 0$.
+> also if your array is already divisible to the block size $m$, this equation will still give you the next number.
+>
+$$
+\text{If } n \bmod m = 0,\quad m + (n \bmod m) = m,\quad\text{so}\quad n^{+} = n + m.
+$$
+
