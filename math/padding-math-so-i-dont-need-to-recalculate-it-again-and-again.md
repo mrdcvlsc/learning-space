@@ -1,4 +1,4 @@
-# Math use in Padding
+# Math used in Padding
 
 so I don't have to recalculate it over and over again if I need it.
 
