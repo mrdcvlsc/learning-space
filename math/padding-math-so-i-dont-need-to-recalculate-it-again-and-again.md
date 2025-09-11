@@ -17,4 +17,7 @@ amount to add to get the next multiple
 
 $m - (n \bmod m)$
 
-when talking about arrays, $n$ is the current size of the array, $m - (n \bmod m)$ is the total elements to add, and $n^+$ is the new size of the padded array.
+> [!NOTE]
+> when talking about arrays, $n$ is the current size of the array, $m - (n \bmod m)$ is the total elements to add, and $n^+$ is the new size of the padded array.
+>
+> also if your array is already divisible to the block size $m$, this equation will still give you the next number $n^+ = n + m - 0$.
