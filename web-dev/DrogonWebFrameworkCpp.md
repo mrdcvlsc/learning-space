@@ -30,5 +30,7 @@ git submodule update --init
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
+# to use clang instead:
+# cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang ..
 make && sudo make install
 ```
