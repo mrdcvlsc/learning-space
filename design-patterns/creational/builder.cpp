@@ -1,58 +1,59 @@
 #include <iostream>
+#include <string>
+#include <utility>
 
-class Product {
-  int price;
-  int rating;
-  int product_id;
-  std::string name;
+class IProduct {
+  int m_price{0};
+  int m_rating{0};
+  int m_product_id{0};
+  std::string m_name;
 
 public:
-  Product() : price(0), rating(0), product_id(0), name() {}
+  IProduct() = default;
+  IProduct(std::string name, int price, int rating, int product_id)
+      : m_price(price), m_rating(rating), m_product_id(product_id),
+        m_name(std::move(name)) {}
 
-  Product(std::string name, int price, int rating, int product_id)
-      : price(price), rating(rating), product_id(product_id), name(name) {}
+  void setName(std::string name) { this->m_name = std::move(name); }
+  void setPrice(int price) { this->m_price = price; }
+  void setRating(int rating) { this->m_rating = rating; }
+  void setProductID(int product_id) { this->m_product_id = product_id; }
 
-  void setPrice(int price) { this->price = price; }
-  void setRating(int rating) { this->rating = rating; }
-  void setProductID(int product_id) { this->product_id = product_id; }
-  void setName(std::string const &name) { this->name = name; }
-
-  void printProduct() {
-    std::cout << "\n";
-    std::cout << "Product Name : " << name << '\n';
-    std::cout << "Price        : " << price << '\n';
-    std::cout << "Rating       : " << rating << '\n';
-    std::cout << "ID           : " << product_id << '\n';
+  void printProduct() const {
+    std::cout << "\nProduct Name : " << m_name << '\n'
+              << "Price        : " << m_price << '\n'
+              << "Rating       : " << m_rating << '\n'
+              << "ID           : " << m_product_id << '\n';
   }
 };
 
 class Builder {
-  Product product;
+  IProduct product;
 
 public:
-  Builder() : product() {}
+  Builder() = default;
 
-  Builder addName(std::string const &name) {
-    product.setName(name);
+  Builder &addName(std::string name) {
+    product.setName(std::move(name));
     return *this;
   }
 
-  Builder addPrice(int price) {
+  Builder &addPrice(int price) {
     product.setPrice(price);
     return *this;
   }
 
-  Builder addRating(int rating) {
+  Builder &addRating(int rating) {
     product.setRating(rating);
     return *this;
   }
 
-  Builder addProductID(int id) {
+  Builder &addProductID(int id) {
     product.setProductID(id);
     return *this;
   }
 
-  Product build() { return product; }
+  IProduct build() { return std::move(product); }
 };
 
 int main() {

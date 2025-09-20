@@ -34,8 +34,8 @@ public:
         subscribers.end());
 
     for (auto const &wp : subscribers) {
-      if (auto sp = wp.lock()) {
-        sp->sendNotification(message);
+      if (auto subscriber = wp.lock()) {
+        subscriber->sendNotification(message);
       }
     }
   }
