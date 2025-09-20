@@ -1,4 +1,4 @@
-#include <cstddef>
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -12,7 +12,7 @@ struct USB_interface {
   virtual std::string readData() const = 0;
 };
 
-// A native USB device (already matches IUSB)
+// Native device implementing USB_interface
 class FlashDrive : public USB_interface {
   std::string data;
 
@@ -44,13 +44,11 @@ public:
   }
 
   void microTransfer(const std::string &data) { saved_memory = data; }
-
-  std::string microRead() { return saved_memory; }
+  std::string microRead() const { return saved_memory; }
 };
 
 // Adapter: makes a MicroUSB look like an USB_interface to the Computer
 class MicroUSBToUSBAdapter : public USB_interface {
-
   std::shared_ptr<MicroUSB> device;
 
 public:
@@ -61,16 +59,13 @@ public:
     std::cout << "[Adapter] adapting USB connect -> microPlugIn()\n";
     device->microPlugIn();
   }
-
   void disconnect() override {
-    std::cout << "[Adapter] adapting USB disconnect -> microPlugIn()\n";
+    std::cout << "[Adapter] adapting USB disconnect -> microPlugOut()\n";
     device->microPlugOut();
   }
-
   void sendData(const std::string &payload) override {
     device->microTransfer(payload);
   }
-
   std::string readData() const override { return device->microRead(); }
 };
 
@@ -81,7 +76,16 @@ class Computer {
 public:
   size_t attach(std::shared_ptr<USB_interface> peripheral) {
     peripheral->connect();
-    peripherals.push_back(std::move(peripheral));
+
+    // find an expired slot to reuse
+    for (size_t i = 0; i < peripherals.size(); ++i) {
+      if (peripherals[i].expired()) {
+        peripherals[i] = peripheral;
+        return i;
+      }
+    }
+
+    peripherals.push_back(peripheral);
     return peripherals.size() - static_cast<size_t>(1);
   }
 
@@ -98,6 +102,9 @@ public:
 
     if (auto peripheral = peripherals[peripheral_index].lock()) {
       peripheral->sendData(data);
+    } else {
+      std::cout << "[Computer] (save) device not found\n";
+      peripherals[peripheral_index].reset(); // tidy up
     }
   }
 
@@ -114,6 +121,9 @@ public:
 
     if (auto peripheral = peripherals[peripheral_index].lock()) {
       return peripheral->readData();
+    } else {
+      std::cout << "[Computer] (read) device expired or removed\n";
+      peripherals[peripheral_index].reset();
     }
 
     return "";
@@ -123,21 +133,18 @@ public:
 int main() {
   Computer pc;
 
-  auto flash_drive = std::make_shared<FlashDrive>();
+  auto flash = std::make_shared<FlashDrive>();
+  size_t flash_idx = pc.attach(flash);
 
-  auto usb_idx = pc.attach(flash_drive);
-  pc.saveFile(usb_idx, "photo.jpg");
-  std::cout << "read: " << pc.readFile(usb_idx) << '\n';
+  pc.saveFile(flash_idx, "photo.jpg");
+  std::cout << "read flash: " << pc.readFile(flash_idx) << '\n';
 
-  std::cout << "----\n";
+  auto micro = std::make_shared<MicroUSB>();
+  auto adapter = std::make_shared<MicroUSBToUSBAdapter>(micro);
+  size_t adapter_idx = pc.attach(adapter);
 
-  // 2) Attach a micro-USB device via the adapter
-  auto microDevice = std::make_shared<MicroUSB>();
-  auto adapter = std::make_shared<MicroUSBToUSBAdapter>(microDevice);
-
-  auto adapter_idx = pc.attach(adapter);
   pc.saveFile(adapter_idx, "document.txt");
-  std::cout << "read: " << pc.readFile(adapter_idx) << '\n';
+  std::cout << "read adapter: " << pc.readFile(adapter_idx) << '\n';
 
   return 0;
 }

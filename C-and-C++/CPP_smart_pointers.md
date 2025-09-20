@@ -228,6 +228,12 @@ if (auto sp = w.lock()) {           // sp is shared_ptr<Foo>
 * `shared_ptr` aliasing constructor: lets a `shared_ptr` share ownership of an object but point to a subobject (useful for containers/parts).
 * Custom deleters: supported by both `unique_ptr` (type part of pointer) and `shared_ptr` (stored in control block).
 
+* `weak_ptr::lock()` vs. `weak_ptr::expired()`:
+
+  * `.lock()` → attempts to promote the `weak_ptr` to a `shared_ptr`. If the object still exists, you get a valid `shared_ptr` you can use; if it’s already destroyed, you get an empty `shared_ptr`.
+  * `.expired()` → just a check that returns `true` if the object no longer exists. It does **not** give you access to the object.
+  * **When to use which:** use `.lock()` whenever you plan to *access* the object, since it safely gives you a temporary owning pointer. Use `.expired()` if you only need to test whether the object is still alive, but don’t need to actually use it.
+
 ---
 
 ## Performance & thread-safety summary
@@ -258,12 +264,3 @@ if (auto sp = w.lock()) {           // sp is shared_ptr<Foo>
 * Need shared ownership across multiple owners? → `std::shared_ptr` (+ `std::weak_ptr` to observe).
 * Need to avoid keeping object alive but need to check existence? → `std::weak_ptr`.
 * Need very low overhead or compile-time polymorphism? → prefer value objects, templates, `std::variant`, or virtual tables on stack-allocated objects (not smart pointers).
-
----
-
-If you like, I can:
-
-* show a short code example demonstrating a **cycle** between `shared_ptr`s and how `weak_ptr` fixes it, or
-* give a micro-benchmark demonstrating the copy cost of `shared_ptr` vs `unique_ptr`.
-
-Which example would help you most?
