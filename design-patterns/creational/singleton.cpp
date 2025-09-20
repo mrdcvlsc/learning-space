@@ -4,21 +4,6 @@
 class Singleton {
     public:
         static Singleton& instance() {
-            static Singleton* singleton = new Singleton();
-            return *singleton;
-        }
-
-        void set_data(int value) { data = value; }
-        int get_data() { return data; }
-    private:
-        Singleton() : data(0) {}
-        ~Singleton() {}
-        int data;    
-};
-
-class Singleton {
-    public:
-        static Singleton& instance() {
             static Singleton* singleton;
             
             if (singleton == nullptr) {
