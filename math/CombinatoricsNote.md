@@ -3,6 +3,9 @@
 ## Permutation vs Combination
 
 - **Permutation** - order matters.
+
+	Say we 
+
 - **Combination** - order does not matter (unordered).
 
 ## Finding all possible number of pairs from the elements of set A & B (order DOES NOT matter)
@@ -51,10 +54,38 @@ Where *s* is the number of sets. Notice that you could extend it to multiple set
 
 * This assumes all elements are distinct.
 * By convention ($0! = 1$).
-* If you want the number of ordered arrangements of length (r) (without repetition) from (n) distinct elements, use the permutation formula
+* If you want the number of ordered arrangements of length (sub) (without repetition) from (n) distinct elements, use the permutation formula
 
 $$
-P(n,r)=\frac{n!}{(n-r)!}\quad(0\le r\le n).
+P(n,sub)=\frac{n!}{(n-sub)!},\quad(0\le sub\le n).
+$$
+
+## Permutations of an *n*-element sequence with repeated values
+
+**Question.** Given a sequence of (n) elements that may include repeated values, how many distinct sequential arrangements (permutations) are possible?
+
+**Answer:**
+If the sequence contains $(k)$ distinct symbols and the multiplicities (counts) of those symbols are
+
+$$
+n_1,n_2,\dots,n_k,\quad(\sum_{j=1}^k n_j = n)
+$$
+
+then the number of distinct permutations is the multinomial formula
+
+$$
+P=\dfrac{n!}{n_1! n_2! \cdots n_k!}
+$$
+
+Here each $(n_j!)$ corrects for the overcounting caused by swapping identical items of symbol $(j)$.
+
+**Example:** sequence `AABCC`.
+
+* $(n=5)$.
+* Distinct symbols: $(A,B,C)$ with multiplicities $(n_A=2, n_B=1, n_C=2)$.
+
+$$
+P=\frac{n!}{n_A! \cdot n_B! \cdot n_C!}=\frac{5!}{2!\cdot1!\cdot2!}=\frac{120}{2\cdot1\cdot2}=\frac{120}{4}=30.
 $$
 
 ## Number of possible *n*-digit sequences in base (B)
