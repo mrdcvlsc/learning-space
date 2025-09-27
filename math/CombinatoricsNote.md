@@ -77,7 +77,7 @@ $$
 P=\dfrac{n!}{n_1! n_2! \cdots n_k!}
 $$
 
-Here each $(n_j!)$ corrects for the overcounting caused by swapping identical items of symbol $(j)$.
+Here, division to $n_1! n_2! \cdots n_k!$ corrects for the overcounting caused by swapping identical items of symbol.
 
 **Example:** sequence `AABCC`.
 
