@@ -2,11 +2,30 @@
 
 ## Permutation vs Combination
 
-- **Permutation** - order matters.
+Consider the following scenario, there are 5 different kinds of fruit and 3 boxes.
 
-	Say we 
+- $n = 5$
+- $r = 3$
 
-- **Combination** - order does not matter (unordered).
+### Permutation - order matters.
+
+You are tasked to find out how many ways you can put one fruit in each of the boxes, to get the total ways to do it you can use the permutation formula below
+
+$$
+n^P r = P(n,r)=\frac{n!}{(n-r)!},\quad(0\le r\le n).
+$$
+
+### Combination - order does not matter (unordered).
+
+You are tasked to count how many ways to place one fruit in each of the 3 boxes. That is, the arrangement is the same no matter which box
+holds which fruit, for example, (Box1: apple, Box2: orange, Box3: mango) is identical to (Box1: mango, Box2: apple, Box3: orange),
+to get the total number of ways, you can use the combination formula below.
+
+$$
+n^C r = C(n,r)=\frac{n!}{(n-r)! \cdot r!},\quad(0\le r\le n).
+$$
+
+**NOTE:** in some sources $k$ is used instead of $r$.
 
 ## Finding all possible number of pairs from the elements of set A & B (order DOES NOT matter)
 
