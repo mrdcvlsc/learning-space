@@ -55,19 +55,21 @@ $$
 n = 3! \cdot (|A| \cdot |B| \cdot |C|)
 $$
 
-or
+Notice that you could extend it to multiple sets using the same idea.
 
 $$
-n = s! \cdot (|A| \cdot |B| \cdot |C|)
+n = s! \cdot (\prod_{i=1}^{n} |S_i|)
 $$
 
-Where *s* is the number of sets. Notice that you could extend it to multiple sets using the same idea.
+Here the $s$ is the number of sets, $S_i$ is a set we get when we iterate over all of the sets, and for $|S_i|$ we just get the size/cardinality of the current set during iteration.
 
 ## Permutations of *n* distinct elements
 
 **Question.** Given a sequence of *n* **distinct** elements, how many different sequential arrangements (permutations or *P*) are possible?
 
 **Answer:** $P = n!$
+
+**Example:** `ABC`, $P = 3! = 6$
 
 **Notes:**
 
