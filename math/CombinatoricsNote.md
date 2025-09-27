@@ -57,26 +57,16 @@ $$
 P(n,r)=\frac{n!}{(n-r)!}\quad(0\le r\le n).
 $$
 
----
-
 ## Number of possible *n*-digit sequences in base (B)
 
 **Question.** For a digit system of base (B), how many different (n)-digit sequences are possible? (Here an "n-digit sequence" means an ordered string of (n) digits; leading zeros are allowed.)
 
-**Answer.**
+**Answer:** $C = B^n$
 
-$$
-C = B^n
-$$
+**Example:** for base 10 $(B=10)$ and $(n=2)$ digits, there are $C = 10^2 = 100$, possible sequences, namely `00` through `99`.
 
-**Example.** For base 10 (*B=10*) and (*n=2*) digits, there are $C = 10^2 = 100$, possible sequences, namely `00` through `99`.
-
-**If repetition is not allowed:** when digits cannot repeat (and (n\le B)), the count is the permutation of (B) taken (n) at a time:
+If when digits cannot repeat and $(n \le B)$, the count is the permutation of $(B)$ taken $(n)$ at a time:
 
 $$
 P(B,n)=\frac{B!}{(B-n)!}.
 $$
-
----
-
-**Terminology note:** In combinatorics the word *combination* usually means an unordered selection (order does not matter). In the sections above we discuss *ordered* arrangements (permutations) and *digit sequences* — so using "sequence" or "ordered arrangement" is less ambiguous than "combination."
