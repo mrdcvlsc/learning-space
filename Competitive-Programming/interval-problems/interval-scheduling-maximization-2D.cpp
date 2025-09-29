@@ -1,4 +1,6 @@
 /*
+  Activity Selection Problem
+
   Problem:
   ----------
   We are given n activities (each with a start and end time) and k classrooms.

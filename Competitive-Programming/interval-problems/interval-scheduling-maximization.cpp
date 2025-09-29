@@ -1,3 +1,5 @@
+// Activity Selection Problem
+
 // problem: given multiple intervals in a number line, get the max
 // number of intervals you can place to the number line without overlap
 // 
