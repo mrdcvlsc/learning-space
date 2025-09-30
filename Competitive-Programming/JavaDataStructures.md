@@ -57,7 +57,51 @@ String popped = dq.pop();
 
 ---
 
-## 3.) Set (ordered) - `TreeSet` (red-black tree)
+## 3. Stack (LIFO structure, like `std::stack` in C++)
+
+* **Legacy class:** `java.util.Stack<E>` (since Java 1.0, synchronized, extends `Vector`).
+* **Preferred modern replacement:** `ArrayDeque<E>` used as a stack (Java 1.6+).
+* **Time complexity:** `push`, `pop`, `peek` are O(1).
+
+**Example with modern `ArrayDeque` (preferred):**
+
+```java
+import java.util.ArrayDeque;
+import java.util.Deque;
+
+Deque<Integer> st = new ArrayDeque<>();
+st.push(10);
+st.push(20);
+System.out.println(st.peek()); // 20
+System.out.println(st.pop());  // 20
+System.out.println(st.isEmpty());
+```
+
+---
+
+## 4.) Queue (FIFO) - `ArrayDeque` as queue and blocking queue example
+
+```java
+import java.util.ArrayDeque;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+// non-blocking FIFO using ArrayDeque
+Queue<Integer> q = new ArrayDeque<>();
+q.offer(1);                 // add (returns false if cannot)
+q.offer(2);
+Integer head = q.peek();    // peek at head
+Integer polled = q.poll();  // poll removes and returns head
+
+// bounded blocking queue (concurrent) example
+ArrayBlockingQueue<Integer> bq = new ArrayBlockingQueue<>(10);
+bq.put(5);                  // blocks if full
+Integer take = bq.take();   // blocks if empty
+```
+
+---
+
+## 5.) Set (ordered) - `TreeSet` (red-black tree)
 
 ```java
 import java.util.TreeSet;
@@ -79,7 +123,7 @@ NavigableSet<Integer> range = ts.subSet(2, true, 9, false); // range view
 
 ---
 
-## 4.) Multiset (counts) - Guava `Multiset` (no built-in JDK multiset)
+## 6.) Multiset (counts) - Guava `Multiset` (no built-in JDK multiset)
 
 ```java
 // Requires Guava library on the classpath
@@ -112,7 +156,7 @@ m.put("apple", Math.max(0, c - 1));  // decrement or remove
 
 ---
 
-## 5.) Map (ordered) - `TreeMap` (sorted map)
+## 7.) Map (ordered) - `TreeMap` (sorted map)
 
 ```java
 import java.util.TreeMap;
@@ -134,7 +178,7 @@ NavigableMap<String,Integer> sub = tm.subMap("a", true, "z", true);
 
 ---
 
-## 6.) Multimap - Guava `Multimap` and JDK alternative
+## 8.) Multimap - Guava `Multimap` and JDK alternative
 
 ```java
 // Guava option (add Guava to classpath)
@@ -168,7 +212,7 @@ mm2.get("k1").remove("v1");            // remove one value
 
 ---
 
-## 7.) Unordered map (`HashMap`)
+## 9.) Unordered map (`HashMap`)
 
 ```java
 import java.util.HashMap;
@@ -196,7 +240,7 @@ chm.putIfAbsent("a", 1);
 
 ---
 
-## 8.) Unordered set (`HashSet`)
+## 10.) Unordered set (`HashSet`)
 
 ```java
 import java.util.HashSet;
@@ -212,29 +256,7 @@ for (String s : hs) System.out.println(s);
 
 ---
 
-## 9.) Queue (FIFO) - `ArrayDeque` as queue and blocking queue example
-
-```java
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
-
-// non-blocking FIFO using ArrayDeque
-Queue<Integer> q = new ArrayDeque<>();
-q.offer(1);                 // add (returns false if cannot)
-q.offer(2);
-Integer head = q.peek();    // peek at head
-Integer polled = q.poll();  // poll removes and returns head
-
-// bounded blocking queue (concurrent) example
-ArrayBlockingQueue<Integer> bq = new ArrayBlockingQueue<>(10);
-bq.put(5);                  // blocks if full
-Integer take = bq.take();   // blocks if empty
-```
-
----
-
-## 10.) Set - `HashSet`, `TreeSet`, `LinkedHashSet` (insertion-ordered)
+## 11.) Set - `HashSet`, `TreeSet`, `LinkedHashSet` (insertion-ordered)
 
 ```java
 import java.util.HashSet;
@@ -252,7 +274,7 @@ u.remove("a"); ordered.remove("a"); insOrdered.remove("a");
 
 ---
 
-## 11.) Min-heap - `PriorityQueue` (default is min-heap)
+## 12.) Min-heap - `PriorityQueue` (default is min-heap)
 
 ```java
 import java.util.PriorityQueue;
@@ -269,7 +291,7 @@ int polled = minHeap.poll(); // removes smallest
 
 ---
 
-## 12.) Max-heap - `PriorityQueue` with reversed comparator
+## 13.) Max-heap - `PriorityQueue` with reversed comparator
 
 ```java
 import java.util.PriorityQueue;
@@ -286,7 +308,19 @@ int removedMax = maxHeap.poll();
 
 ---
 
-## 13.) Red-black tree - `TreeSet` / `TreeMap` (already shown above)
+To use custom class with min and max heap you need to pass a comparator:
+
+```java
+// better to be use for :
+new PriorityQueue<>(Comparator.comparing((T person) -> person.age).reversed());
+
+// better to use for POD types.
+new PriorityQueue<>(Comparator.comparingInt((T person) -> person.age).reversed());
+```
+
+---
+
+## 14.) Red-black tree - `TreeSet` / `TreeMap` (already shown above)
 
 ```java
 // TreeSet example (red-black tree)
@@ -300,28 +334,6 @@ rb.add("b");
 boolean exists = rb.contains("a");
 rb.remove("c");
 String smallest = rb.first();
-```
-
----
-
-## 14. Stack (LIFO structure, like `std::stack` in C++)
-
-* **Legacy class:** `java.util.Stack<E>` (since Java 1.0, synchronized, extends `Vector`).
-* **Preferred modern replacement:** `ArrayDeque<E>` used as a stack (Java 1.6+).
-* **Time complexity:** `push`, `pop`, `peek` are O(1).
-
-**Example with modern `ArrayDeque` (preferred):**
-
-```java
-import java.util.ArrayDeque;
-import java.util.Deque;
-
-Deque<Integer> st = new ArrayDeque<>();
-st.push(10);
-st.push(20);
-System.out.println(st.peek()); // 20
-System.out.println(st.pop());  // 20
-System.out.println(st.isEmpty());
 ```
 
 ---
@@ -375,7 +387,7 @@ bs.clear();
 
 ---
 
-## Big Integers
+## 16. Big Integers
 
 ```java
 // BigInteger examples
