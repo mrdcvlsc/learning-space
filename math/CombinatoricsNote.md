@@ -1,5 +1,13 @@
 # Combinatorics Note
 
+## n-th triangular number
+
+Find the max possible number ($m$) of subsets (improper subset included) with a cardinality greater than $1$ in a given set of size $s = n + 1$, also note that $n = s - 1$.
+
+$$
+m = \frac{n(n+1)}{2}
+$$
+
 ## Permutation vs Combination
 
 Consider the following scenario, there are 5 different kinds of fruit and 3 boxes.
