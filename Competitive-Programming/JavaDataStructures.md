@@ -17,6 +17,9 @@ int x = a.get(0);                       // get
 boolean has20 = a.contains(20);         // search
 int idx = a.indexOf(15);
 
+a.sort(Comparator.naturalOrder());      // asc - same as Collections.sort(a)
+a.sort(Comparator.reverseOrder());      // desc
+
 a.remove(Integer.valueOf(10));          // remove by object
 a.remove(0);                            // remove by index
 
@@ -43,6 +46,9 @@ ll.add(1, "middle");                        // insert at index
 String first = ll.getFirst();               // peek front
 String last = ll.getLast();                 // peek last
 boolean has = ll.contains("a");             // search
+
+ll.sort(Comparator.naturalOrder());      // asc - same as Collections.sort(ll)
+ll.sort(Comparator.reverseOrder());      // desc
 
 ll.removeFirst();                           // remove front
 ll.removeLast();                            // remove last
