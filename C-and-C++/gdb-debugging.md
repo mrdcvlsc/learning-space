@@ -76,7 +76,12 @@ nexti <optional-number-of-next-lines>
 
 ```bash
 print <variable-name-of-code>
+
+# print binary
+p /t <variable-name-or-code>
 ```
+
+See `help x` for more info on the FMT (format) switches.
 
 if output is `0x0` then there is no value / null
 
