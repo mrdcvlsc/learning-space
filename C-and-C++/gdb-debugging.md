@@ -30,6 +30,14 @@ run
 r
 ```
 
+### Run Code with Standard Input
+
+store your input in a input.txt file.
+
+```bash
+run < input.txt
+```
+
 ### Add Break Point
 
 ```bash
@@ -75,6 +83,10 @@ if output is `0x0` then there is no value / null
 ```bash
 print ptr@element-size
 ```
+
+you could also print std::vector to see its value `print vec_name`, and even call the methods of std::vector and see the result `print vec_name.size()`.
+
+I don't know if this extends to other classes and stl type or maybe even your own class or type, but it's free to try.
 
 ### Print Array Values
  
