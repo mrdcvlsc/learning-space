@@ -46,6 +46,8 @@ b <line-number or variable-or-function-name>
 
 ### Display Break Points
 
+show breakpoint and watchpoint numbers, use `info watch` for watchpoint only.
+
 ```bash
 info break
 ```
@@ -102,6 +104,14 @@ It prints automatically the watch variables
 watch <variable-name-of-code>
 ```
 
+### Unwatch
+
+delete breakpoints and watchpoints, use with `info break`
+
+```bash
+d <watchpoint-number or breakpoint-number>
+```
+
 ### Change variable value
 
 ```bash
@@ -119,6 +129,10 @@ c
 ```bash
 backtrace full
 ```
+
+### Stop an infinite loop when the program is curring
+
+just use `ctrl+c`.
 
 ### Refresh the Screen if the design broke
 
