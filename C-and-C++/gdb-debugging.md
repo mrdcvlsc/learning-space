@@ -28,7 +28,7 @@ run
 ```
 
 Run with redirected stdin / stdout.
-Fist save the inputs to a file, for example `input.txt`,
+First save the inputs to a file, for example `input.txt`,
 then run the program. You could also save the output in
 output.txt.
 
