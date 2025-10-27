@@ -437,7 +437,75 @@ descending order.
   thread apply all -ascending bt
   ```
 
-#### 
+---
+
+## Working with Processes
+
+* `set follow-fork-mode child|parent` - choose which process gdb follows after `fork`/`vfork`.
+* `set detach-on-fork on|off` - `off` keeps both parent and child attached as inferiors; `on` detaches the non-followed one.
+* `set follow-exec-mode same|new` - control behavior after `exec`: keep same inferior or treat the exec as a new image/inferior.
+* `catch fork` / `catch vfork` / `catch exec` - stop when those events occur.
+* `info inferiors` - list processes gdb controls.
+* `inferior <n>` - switch to inferior number n.
+* `attach <pid>` / `detach` - attach to or release an external process.
+* `info breakpoints` / deferred breakpoints - set breakpoints before the new image loads; gdb will resolve them at load time.
+
+#### Fork - follow the child
+
+```bash
+set follow-fork-mode child
+set detach-on-fork off   # keep both attached if you want to inspect parent later
+catch fork
+run
+# on fork hit: use `info inferiors`, `inferior <n>` to switch, inspect, then `continue`
+```
+
+#### Fork - follow parent, inspect child later
+
+gdb session:
+
+```bash
+set follow-fork-mode parent
+set detach-on-fork off
+catch fork
+run
+# after fork: `info inferiors` -> note child's inferior number -> `inferior 2` to inspect child
+```
+
+#### Exec - new image loaded by same process
+
+- An `exec`-family call (for example `execve`, `execv`, `execl`, etc.) does not create a new OS process.
+
+- Instead, `exec` replaces the current process's memory image, symbol tables, and program text with a different program.
+
+- The OS PID stays the same, but the running program is now a different binary - i.e., a "new image" inside the same process.
+
+```bash
+catch exec
+set follow-exec-mode new    # or `same` depending on whether you want a new inferior
+run
+# when catch exec fires:
+# - if `new`: use `info inferiors`, `inferior N`, then set breakpoints for new image
+# - if `same`: set breakpoints for the loaded image (e.g., `break main`) then `continue`
+```
+
+#### Fork + Exec - child execs a different program - follow child across exec
+
+combined pattern:
+
+```bash
+set follow-fork-mode child
+set detach-on-fork off
+catch fork
+catch exec
+run
+# workflow:
+# - fork catch: inspect return value / inferiors
+# - exec catch (usually on child): set breakpoints for the new image (or rely on deferred breakpoints)
+# - use `info inferiors` and `inferior N` to confirm which inferior holds the exec'd image
+```
+
+* Tips: use `set detach-on-fork off` when you must inspect both parent and child in one session - otherwise the non-followed process may be detached. After `exec`, prefer `catch exec` + deferred breakpoints or set breakpoints once the new image loads.
 
 ---
 
