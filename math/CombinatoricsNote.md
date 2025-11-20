@@ -1,5 +1,13 @@
 # Combinatorics Note
 
+## Geometric Series
+
+We can find the total number of vertex/node a perfect tree data structure have (meaning that all nodes from the root up to the given $k - 1$ depth have a fixed $n$ number of childrens) using geometic series.
+
+$$
+v = \frac{n^k - 1}{n - 1}
+$$
+
 ## n-th triangular number
 
 Find the max possible number ($m$) of subsets (improper subset included) with a cardinality greater than $1$ in a given set of size $s = n + 1$, also note that $n = s - 1$.
