@@ -144,3 +144,24 @@ db.collection.deleteMany({ status:"inactive" });
 
 ---
 
+# Export and Import Database (dump)
+
+### Installation Guide Link:
+https://www.mongodb.com/docs/database-tools/installation/?operating-system=windows&package-type=msi
+
+### Mongo Restore Guide Link:
+https://www.mongodb.com/docs/database-tools/mongorestore/
+
+### Mongo Dump Guide Link:
+https://www.mongodb.com/docs/database-tools/mongodump/
+
+### Example Dump From A Remote MongoDB Database Then Import To Local MongoDB
+
+1. Install MongoDB Command Line Database Tools - https://www.mongodb.com/try/download/database-tools
+2. Export dump : `mongodump --uri="<mongodb-connection-string>" --db="<database-name>" --out="<output-dump-folder>"`
+3. Import dump : `mongorestore mongodb://localhost:27017 <path-to-dump-folder>`
+
+Notes:
+- the `--db="<database-name>"` is optional and if not provided, it will dump all of the databases in the remote mongodb server to the dump folder.
+- the `--out="<output-dump-folder>"` is also optional and if not provided it will create a folder named `dump` to the current working directory.
+
