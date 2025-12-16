@@ -2,7 +2,15 @@
 
 A concise reference for common MongoDB shell (`mongosh`) commands, structured by operation type. Copy-paste examples directly into your shell.
 
----
+### 0. Run Mongodb In Windows If It's Not Running As A Service After Startup
+
+```cmd
+# command structure
+mongod --port <port-number-to-run-mongodb> --dbpath ./<path-to-where-to-save-mongodb-database>
+
+# example command
+mongod --port 27017 --dbpath C:\Users\User\Mongodb
+```
 
 ### 1. Prerequisites
 
