@@ -17,6 +17,7 @@ CREATE DATABASE app_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 -- SQLite: open (creates file) using client or attach another DB
 -- command-line: sqlite3 app_db.sqlite
 ATTACH DATABASE 'other.db' AS other_db;  -- attach in session
+-- (when finished in the session) DETACH DATABASE other_db;  -- detach the attached database
 ```
 
 **Example output**
@@ -32,11 +33,15 @@ Query OK, 1 row affected (0.01 sec)
 **Details & pitfalls:**
 
 * Choose `utf8mb4` for full Unicode in MySQL/MariaDB. Collation controls case-sensitivity and sort order.
+
 * SQLite stores everything in a file; concurrent writers are limited unless using WAL mode (see Concurrency section).
 
 * **Permissions & privileges:** Creating a database usually requires `CREATE` or admin-level privileges. App accounts should have the minimum required rights (e.g., `INSERT/SELECT/UPDATE/DELETE` on specific schemas) rather than global privileges.
+
 * **Storage engines (MySQL/MariaDB):** Explain briefly InnoDB (transactional, row-level locks, supports FKs) vs MyISAM (non-transactional, table-level locking). Prefer InnoDB for modern apps.
+
 * **Collation effects:** Sorting, uniqueness checks, and `GROUP BY` behavior are affected by collation - a case-insensitive collation (`_ci`) treats `A` = `a`.
+
 * **SQLite file-level considerations:** File locking, OS-level backups, and permissions matter. If multiple processes write concurrently, use WAL (`PRAGMA journal_mode = WAL`) to reduce writer contention.
 
 ---
@@ -116,9 +121,11 @@ CREATE TABLE items (
 **Details:**
 
 * In MySQL/MariaDB prefer `id INT AUTO_INCREMENT PRIMARY KEY`.
+
 * In SQLite `INTEGER PRIMARY KEY` is special and acts as the `rowid` (auto-incrementing).
 
 * **Autoincrement differences:** In MySQL `AUTO_INCREMENT` uses the table's internal counter. In SQLite, `INTEGER PRIMARY KEY` uses the `rowid`. `AUTOINCREMENT` keyword in SQLite forces a monotonically increasing counter (never reuses ids) but can cause larger DB files - usually avoid unless you need that property.
+
 * **Choosing column types:** Use `VARCHAR(n)` when you care about a maximum length and storage; `TEXT` for large free-form content. Use `DECIMAL` (fixed point) for money to avoid floating-point rounding errors.
 
 ---
@@ -144,10 +151,13 @@ ALTER TABLE items ADD COLUMN created_at DATETIME DEFAULT CURRENT_TIMESTAMP;
 **Details & pitfalls:**
 
 * Adding a column with a default populates existing rows with the default (behavior varies slightly by engine/version).
+
 * Some `ALTER` operations rewrite large tables - test on copy for big tables.
 
 * **Blocking vs online DDL:** Modern MySQL/MariaDB/InnoDB versions support many online DDL operations; others still lock tables. Always check engine/version behavior and test on staging.
+
 * **NULL vs NOT NULL:** Adding a `NOT NULL` column without a default will fail when existing rows exist. Best practice: add the column nullable, backfill data, then alter to `NOT NULL`.
+
 * **Backups & migrations:** For large tables, consider creating a shadow table, copying rows in chunks, then swapping names to minimize downtime.
 
 ---
@@ -235,11 +245,15 @@ CREATE TABLE posts (
 **Engine notes & pitfalls:**
 
 * SQLite requires `PRAGMA foreign_keys = ON;` per connection to enforce foreign keys.
+
 * `UNIQUE` prevents duplicates; `PRIMARY KEY` implies unique + not null.
+
 * `ON DELETE CASCADE` removes dependent rows automatically - use carefully.
 
 * **Indexing FKs:** Index the referenced and referencing columns to speed joins and cascade operations.
+
 * **Constraint checking behavior:** Some databases evaluate constraints at statement end vs transaction end; know your engine's semantics.
+
 * **Deferrable constraints:** While MySQL doesn't support deferrable constraints, other engines may. Teach students these differences especially if they come from or move to other RDBMS.
 
 ---
@@ -253,6 +267,9 @@ CREATE TABLE posts (
 ```sql
 CREATE INDEX idx_users_username ON users(username);
 CREATE UNIQUE INDEX ux_users_email ON users(email);
+
+-- Drop an index (server engines / SQLite syntax varies)
+DROP INDEX idx_users_username;  -- MySQL/MariaDB / SQLite: DROP INDEX idx_users_username;
 ```
 
 **Example EXPLAIN snippet (conceptual)**
@@ -264,10 +281,13 @@ CREATE UNIQUE INDEX ux_users_email ON users(email);
 **Pitfalls:**
 
 * `LIKE '%term%'` cannot use a leading-index (leading `%` prevents index use).
+
 * Composite indexes help only when queries filter/order using the index column order.
 
 * **Covering indexes:** If an index includes all columns used by a query (SELECT, WHERE), the DB can satisfy the request from the index without accessing the table (index-only scan).
+
 * **Index maintenance:** Use `ANALYZE TABLE` (MySQL) or `ANALYZE` (SQLite) to refresh statistics so the optimizer makes better choices.
+
 * **Index cost:** Each index increases write latency (INSERT/UPDATE/DELETE). Balance read speed vs write overhead.
 
 ---
@@ -353,7 +373,12 @@ SELECT id, username FROM users WHERE active = 1;
 ```sql
 SELECT id, username, created_at
 FROM users
-ORDER BY created_at DESC;
+ORDER BY created_at DESC;  -- newest first
+
+-- Ascending (oldest first) explicit example
+SELECT id, username, created_at
+FROM users
+ORDER BY created_at ASC;   -- oldest first
 ```
 
 **Example output**
@@ -439,6 +464,7 @@ SELECT id, username FROM users WHERE username LIKE '%al%';
 **Pitfalls:** Leading `%` prevents index use - slow on large tables. For serious search, use full-text.
 
 * For case-insensitive `LIKE` behavior, collations matter. Some engines offer `ILIKE` (case-insensitive) (e.g., PostgreSQL), but MySQL uses collations.
+* For even more flexible pattern or regex matching, many engines support `REGEXP` or `RLIKE` (e.g., MySQL `column REGEXP 'pattern'`) — syntax and features vary by engine.
 * For very large text search, consider full-text indexes or an external search engine (Elasticsearch, Meilisearch).
 
 ---
@@ -477,6 +503,20 @@ LEFT JOIN posts p ON p.user_id = u.id;
 | -------: | ------- |
 |    alice | Welcome |
 |    carol | (NULL)  |
+
+**Additional join types (opposites / complements):**
+
+```sql
+-- RIGHT JOIN (mirror of LEFT JOIN) - returns rows from the right table even if no match on left
+SELECT u.username, p.title
+FROM users u
+RIGHT JOIN posts p ON p.user_id = u.id;
+
+-- FULL OUTER JOIN (returns rows when either side matches) - not supported directly in MySQL; emulate with UNION of LEFT and RIGHT or use databases that support FULL OUTER JOIN
+SELECT u.username, p.title
+FROM users u
+FULL OUTER JOIN posts p ON p.user_id = u.id;  -- dialect-dependent
+```
 
 **Pitfalls:** Missing or wrong `ON` clause can cause cartesian products (huge, incorrect result).
 
@@ -552,6 +592,7 @@ INSERT INTO users (username, email, active) VALUES
 * Two rows added in one round-trip.
 
 * **Batch size:** Very large single-statement batches can exceed packet/transaction size limits - chunk inserts in reasonable sizes and monitor performance.
+
 * **Bulk loaders:** For massive imports, use bulk-load utilities if available to avoid transactional overhead per-row.
 
 ---
@@ -621,7 +662,7 @@ ON CONFLICT(k) DO UPDATE SET v = excluded.v;
 **Pitfall:** SQLite `INSERT OR REPLACE` deletes old row and inserts new - beware of FK cascades.
 
 * **Race conditions & atomicity:** `ON DUPLICATE KEY` / `ON CONFLICT` are atomic upserts that avoid the classic `SELECT` then `INSERT/UPDATE` race.
-* **MySQL `VALUES()` deprecation:** Newer MySQL versions favor `INSERT ... AS new`/`ON DUPLICATE KEY UPDATE ...` using `NEW`/`EXCLUDED` aliases in other DBs; check exact dialect for portability.
+* **MySQL `VALUES()` deprecation:** Newer MySQL versions prefer `INSERT ... AS new` patterns or use expressions that reference the `VALUES()` alias differently; check exact dialect for portability.
 
 ---
 
@@ -640,6 +681,13 @@ UPDATE accounts SET balance = balance + 100 WHERE id = 2;
 COMMIT;
 -- or on error:
 ROLLBACK;
+```
+
+**Alternative starts / notes:**
+
+```sql
+START TRANSACTION;  -- equivalent to BEGIN in many engines
+SET autocommit = 0; -- turn off autocommit in some clients (MySQL) then COMMIT; SET autocommit = 1;
 ```
 
 **Example effect**
@@ -661,6 +709,8 @@ ROLLBACK;
 
 ```sql
 SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- or per-transaction:
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
 ```
 
 **SQLite concurrency tip**
@@ -780,9 +830,11 @@ SELECT rowid, * FROM posts_fts WHERE posts_fts MATCH 'search';
 **Commands (conceptual)**
 
 * MySQL/MariaDB: `mysqldump --databases app_db > dump.sql` (logical dump) or physical backups (Percona/XtraBackup).
+
 * SQLite: copy the DB file or use `sqlite3 db.sqlite ".backup backup.sqlite"` / backup API.
 
 * **Backup strategy:** Keep multiple retention points, test restores regularly, and store backups offsite. Consider point-in-time recovery (binlogs) for MySQL by enabling binary logging.
+
 * **Consistent backups:** For live systems, use consistent snapshot tools (LVM/ZFS snapshots) or logical dumps taken with minimal locking options.
 
 ---
