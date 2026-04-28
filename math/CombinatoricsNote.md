@@ -102,27 +102,27 @@ $$
 **Question.** Given a sequence of (n) elements that may include repeated values, how many distinct sequential arrangements (permutations) are possible?
 
 **Answer:**
-If the sequence contains $(k)$ distinct symbols and the multiplicities (counts) of those symbols are
+Say the sequence contains $(k)$ distinct symbols and the multiplicities (counts) of each symbols are represented by each elements of the vector $M$, where $(|M| = k)$.
 
 $$
-n_1,n_2,\dots,n_k,\quad(\sum_{j=1}^k n_j = n)
+M_1,M_2,\dots,M_k,\quad(\sum_{i=1}^k M_i = n)
 $$
 
 then the number of distinct permutations is the multinomial formula
 
 $$
-P=\dfrac{n!}{n_1! n_2! \cdots n_k!}
+P=\dfrac{n!}{M_1! M_2! \cdots M_k!}
 $$
 
-Here, division to $n_1! n_2! \cdots n_k!$ corrects for the overcounting caused by swapping identical items of symbol.
+Here, division to $M_1! M_2! \cdots M_k!$ corrects for the overcounting caused by swapping identical items of symbol.
 
 **Example:** sequence `AABCC`.
 
-* $(n=5)$.
-* Distinct symbols: $(A,B,C)$ with multiplicities $(n_A=2, n_B=1, n_C=2)$.
+* $(n=5, \quad k=3)$.
+* Distinct symbols: $(A,B,C)$ with multiplicities $(M_1=2, \quad M_2=1, \quad M_3=2)$ or count of each unique symbol.
 
 $$
-P=\frac{n!}{n_A! \cdot n_B! \cdot n_C!}=\frac{5!}{2!\cdot1!\cdot2!}=\frac{120}{2\cdot1\cdot2}=\frac{120}{4}=30.
+P=\frac{n!}{M_1! \cdot M_2! \cdot M_3!}=\frac{5!}{2!\cdot1!\cdot2!}=\frac{120}{2\cdot1\cdot2}=\frac{120}{4}=30.
 $$
 
 ## Number of possible *n*-digit sequences in base (B)
