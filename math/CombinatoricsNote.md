@@ -4,7 +4,7 @@
 
 We can find the total number of vertex/node a perfect tree (with depth $k$) data structure have using geometic series, when I say a perfect tree what I mean is that all the nodes starting from the root up to the nodes at $k - 1$ depth have a fixed number of $n$ child nodes).
 
-NOTE: $k - 1$ since the nodes at depth $k$ does not have children since they are the leaf nodes.
+**NOTE**: $k - 1$ since the nodes at depth $k$ does not have children since they are the leaf nodes.
 
 $$
 v = \frac{n^k - 1}{n - 1}, \quad (n \gt 1 \quad \land \quad k \ge 0)
@@ -162,6 +162,8 @@ $$
 **Answer:** $C = B^n$
 
 **Example:** for base 10 $(B=10)$ and $(n=2)$ digits, there are $C = 10^2 = 100$, possible sequences, namely `00` through `99`.
+
+**Note:** There might be tricky questions that disguise itself a **set** type of question but they are **not**, for example; when given a set $Y = \\{ a, b, c \\}$, and you're task to find the total number of subsets with cardinality $2$ and such that the elements of the sets can be repeated in the subsets, don't be tricked because this is still the solution to that, each of the elements in the set can be considered as the base $B$ and the specific cardinality for all of the subsets you're finding is $n$.
 
 If when digits cannot repeat and $(n \le B)$, the count is the permutation of $(B)$ taken $(n)$ at a time:
 
