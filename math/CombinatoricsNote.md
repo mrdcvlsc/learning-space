@@ -12,7 +12,13 @@ $$
 
 ## n-th triangular number
 
-Find the max possible number ($m$) of subsets (improper subset included) with a cardinality greater than $1$ in a given set of size $s = n + 1$, also note that $n = s - 1$.
+Given ($k$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), find the total ($m$) number of games or total matchups.
+
+$$
+n = k - 1
+$$
+
+Then we can use the n-th triangular number formula to find out the ($m$) total matchups or number of games
 
 $$
 m = \frac{n(n+1)}{2}
