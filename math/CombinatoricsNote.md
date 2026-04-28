@@ -2,10 +2,12 @@
 
 ## Geometric Series
 
-We can find the total number of vertex/node a perfect tree data structure have (meaning that all nodes from the root up to the given $k - 1$ depth have a fixed $n$ number of childrens) using geometic series.
+We can find the total number of vertex/node a perfect tree (with depth $k$) data structure have using geometic series, when I say a perfect tree what I mean is that all the nodes starting from the root up to the nodes at $k - 1$ depth have a fixed number of $n$ child nodes).
+
+NOTE: $k - 1$ since the nodes at depth $k$ does not have children since they are the leaf nodes.
 
 $$
-v = \frac{n^k - 1}{n - 1}
+(n \gt 1 \quad \land \quad k \ge 0), \quad v = \frac{n^k - 1}{n - 1}
 $$
 
 ## n-th triangular number
