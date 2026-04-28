@@ -18,11 +18,13 @@ $$
 n = k - 1
 $$
 
-Then we can use the n-th triangular number formula to find out the ($m$) total matchups or number of games
+Then we can use the n-th triangular number formula to find out the ($m$) total matchups or number of games:
 
 $$
 m = \frac{n(n+1)}{2}
 $$
+
+The n-th triangular number is also the shortcut of the summation of incrementing numbers starting from $1$ up to $n$ (eg: $1 + 2 + 3 + ... + n$).
 
 ## Permutation vs Combination
 
