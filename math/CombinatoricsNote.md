@@ -7,7 +7,7 @@ We can find the total number of vertex/node a perfect tree (with depth $k$) data
 NOTE: $k - 1$ since the nodes at depth $k$ does not have children since they are the leaf nodes.
 
 $$
-(n \gt 1 \quad \land \quad k \ge 0), \quad v = \frac{n^k - 1}{n - 1}
+v = \frac{n^k - 1}{n - 1}, \quad (n \gt 1 \quad \land \quad k \ge 0)
 $$
 
 ## n-th triangular number
