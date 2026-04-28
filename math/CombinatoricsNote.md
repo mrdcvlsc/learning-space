@@ -163,7 +163,7 @@ $$
 
 **Example:** for base 10 $(B=10)$ and $(n=2)$ digits, there are $C = 10^2 = 100$, possible sequences, namely `00` through `99`.
 
-**Note:** There might be tricky questions that disguise itself a **set** type of question but they are **not**, for example; when given a set $Y = \\{ a, b, c \\}$, and you're task to find the total number of subsets with cardinality $2$ and such that the elements of the sets can be repeated in the subsets, don't be tricked because this is still the solution to that, each of the elements in the set can be considered as the base $B$ and the specific cardinality for all of the subsets you're finding is $n$.
+**Note:** There might be tricky questions that disguise itself as a **set** type of question but they are **not**, for example; when given a set $Y = \\{ a, b, c \\}$, and you're task to find the total number of subsets with cardinality $2$ and such that the elements of the sets can be repeated in the subsets, don't be tricked because this is still the solution to that, each of the elements in the set can be considered as the base $B$ and the specific cardinality for all of the subsets you're finding is $n$.
 
 If when digits cannot repeat and $(n \le B)$, the count is the permutation of $(B)$ taken $(n)$ at a time:
 
