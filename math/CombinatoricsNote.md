@@ -109,7 +109,13 @@ Here the $s$ is the number of sets, $S_i$ is a set we get when we iterate over a
 
 **Answer:** $P = n!$
 
-**Example:** `ABC`, $P = 3! = 6$
+**Example:** `ABC`
+
+$$
+P = 3! = 6
+$$
+
+Which are `ABC`, `ACB`, `BAC`, `BCA`, `CAB`, `CBA`.
 
 **Notes:**
 
