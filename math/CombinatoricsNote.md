@@ -49,7 +49,7 @@ Consider the following scenario, there are 5 different kinds of fruit and 3 boxe
 
 ### Permutation - order matters.
 
-You are tasked to find out how many ways you can put one fruit (you can choose ) in each of the boxes, to get the total ways to do it you can use the permutation formula below
+You are tasked to find out how many ways you can put one fruit (you can choose) in each of the boxes (there are only one fruit per kind, so you cannot repeat putting apples in multiple boxes), to get the total ways to do it you can use the permutation formula below
 
 $$
 n^P r = P(n,r)=\frac{n!}{(n-r)!},\quad(0\le r\le n).
