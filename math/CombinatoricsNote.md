@@ -26,6 +26,20 @@ $$
 
 The n-th triangular number is also the shortcut of the summation of incrementing numbers starting from $1$ up to $n$ (eg: $1 + 2 + 3 + ... + n$).
 
+## Total Number of Subset
+
+Given a set of size $n$, how many subsets ($s$) does it have including the improper subset and the empty set?
+
+$$
+s = 2^n
+$$
+
+Remember this ($s = l + m + n + o$) equation:
+- $l = 1$ representing the number of empty set
+- $m = 1$ representing the number of improper subset or the set itself
+- $n$ is number of all possible sets with cardinality of only 1
+- and $o$ is every other set that is not an empty, not an improper subset, and sets that has a cardinality greater than 1.
+
 ## Permutation vs Combination
 
 Consider the following scenario, there are 5 different kinds of fruit and 3 boxes.
@@ -35,7 +49,7 @@ Consider the following scenario, there are 5 different kinds of fruit and 3 boxe
 
 ### Permutation - order matters.
 
-You are tasked to find out how many ways you can put one fruit in each of the boxes, to get the total ways to do it you can use the permutation formula below
+You are tasked to find out how many ways you can put one fruit (you can choose ) in each of the boxes, to get the total ways to do it you can use the permutation formula below
 
 $$
 n^P r = P(n,r)=\frac{n!}{(n-r)!},\quad(0\le r\le n).
