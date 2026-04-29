@@ -26,6 +26,16 @@ $$
 
 The n-th triangular number is also the shortcut of the summation of incrementing numbers starting from $1$ up to $n$ (eg: $1 + 2 + 3 + ... + n$).
 
+## Arithmetic Progression Sum
+
+The n-th triangular number is actually a case of the sum of arithmetic progression, an arithmetic progression is a sequence of numbers where the difference between any two consecutive numbers is constant, for example $3, 7, 11, 15$, we can calculate the sum of arithmetic progression using the same formula.
+
+$$
+m = \frac{n(a+b)}{2}
+$$
+
+where $a$ is the starting number, $b$ is the lasat number and $n$ is the total count of the given numbers, if we look at the summation formula in the n-th triangular number, in the $(n + 1)$, the number $1$ is the starting number and $n$ is the last number too.
+
 ## Total Number of Subset
 
 Given a set of size $n$, how many subsets ($s$) does it have including the improper subset and the empty set?
