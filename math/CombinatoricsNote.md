@@ -1,14 +1,46 @@
 # Combinatorics Note
 
-## Geometric Series
+## Sum of Geometric Series
 
-We can find the total number of vertex/node a perfect tree (with depth $k$) data structure have using geometic series, when I say a perfect tree what I mean is that all the nodes starting from the root up to the nodes at $k - 1$ depth have a fixed number of $n$ child nodes).
-
-**NOTE**: $k - 1$ since the nodes at depth $k$ does not have children since they are the leaf nodes.
+a sequence of numbers where the ratio between any two consecutive numbers is constant. For example, $3,6,12,24$ is a geometric progression with a constant $k = 2$, its first term is $a = 3$ and $b = 24$ is the last term.
 
 $$
-v = \frac{n^k - 1}{n - 1}, \quad (n \gt 1 \quad \land \quad k \ge 0)
+s = a + ak + ak^2 + ak^3 + ... + b = \frac{bk - a}{k - 1}
 $$
+
+## Total Vertices Of A Perfect K-Ary/N-Ary Tree
+
+K-ary or N-ary trees is where each node has a maximum of $k$ children, it generalizes binary trees ($k = 2$), ternary trees ($k = 3$), etc.
+
+We can find the total number of vertices/node a perfect k-ary tree (with depth $d$) using the geometic series.
+
+$$
+\begin{align}
+v &= \dfrac{bk - a}{k - 1} \\
+&& \text{in the geometric serires } a, ak^2, ak^3, ..., b \\
+&& \text{if there are } m \text{ terms, } \\
+&& \text{we could say that the last term } b = ak^{m-1} \\
+&& \text{and if we substitue it to} b \text{we would get} \\
+v &= \dfrac{(ak^{m-1})k - a}{k - 1} \\
+&& \text{simplify } (ak^{m-1})k \text{ via exponential rule} \\
+v &= \dfrac{ak^m - a}{k - 1} \\
+&& \text{factor out } a \text{ from } ak^m - a \\
+v &= \dfrac{a(k^m - 1)}{k - 1} \\
+&& \text{and since } a \text{ is the starting term} \\
+&& \text{and in a tree there is only one root node} \\
+&& \text{therefore } a = 1 \\
+v &= \dfrac{1(k^m - 1)}{k - 1} \\
+v &= \dfrac{k^m - 1}{k - 1} \\
+\end{align}
+$$
+
+A **perfect** k-ary tree is where all the nodes starting from the root up to the nodes at $d - 1$ depth have a fixed number of $k$ child nodes, only until $d - 1$ since the nodes at depth $d$ does not have children since they are the leaf nodes.
+
+$$
+v = \frac{k^d - 1}{k - 1}, \quad (k \gt 1 \quad \land \quad d \ge 0)
+$$
+
+**NOTE**: some textbook might say that the root node is at depth 0, or count the depth via the number of edges going from the root to a specific node, but for this example we define the root node being at depth 1, and any of its children would be at depth 2, so on and so forth.
 
 ## n-th triangular number
 
