@@ -46,13 +46,13 @@ $$
 
 The n-th triangular number is the shortcut of the **summation of incrementing numbers** starting from $1$ up to $n$ (eg: $1 + 2 + 3 + ... + n$).
 
-We can also use the N-th triangular number to **find the total number of sub-arrays**.
+We can also use the N-th triangular number to **find the total number of sub-arrays** since there are $n$ subarrays of length $1$, there are $n - 1$ subarrays of length $2$... so on and so fort, as we can see this is similar to the incrementing number sequence so we can use the N-th triangular number to find the total number of sub-arrays too.
 
 $$
 s = \frac{n(n+1)}{2}
 $$
 
-Given ($n$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), we can find the total ($m$) number of games or total matchups using the n-th triangular number **but we need to subtract $1$ to $n$** first because a player cannot play against itself.
+Another nice application of n-th triangular number: Given ($n$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), we can find the total ($m$) number of games or total matchups using the n-th triangular number **but we need to subtract $1$ to $n$** first because a player cannot play against itself.
 
 $$
 \begin{align}
