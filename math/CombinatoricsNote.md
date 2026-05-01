@@ -42,21 +42,27 @@ v &= \dfrac{k^m - 1}{k - 1} \\
 \end{align}
 $$
 
-## n-th triangular number
+## N-th Triangular Number
 
-Given ($k$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), find the total ($m$) number of games or total matchups.
+The n-th triangular number is the shortcut of the **summation of incrementing numbers** starting from $1$ up to $n$ (eg: $1 + 2 + 3 + ... + n$).
 
-$$
-n = k - 1
-$$
-
-Then we can use the n-th triangular number formula to find out the ($m$) total matchups or number of games:
+We can also use the N-th triangular number to **find the total number of sub-arrays**.
 
 $$
-m = \frac{n(n+1)}{2}
+s = \frac{n(n+1)}{2}
 $$
 
-The n-th triangular number is also the shortcut of the summation of incrementing numbers starting from $1$ up to $n$ (eg: $1 + 2 + 3 + ... + n$).
+Given ($n$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), we can find the total ($m$) number of games or total matchups using the n-th triangular number **but we need to subtract $1$ to $n$** first because a player cannot play against itself, or in general each node can connect to every other node except itself (so if you want a connection to itself don't subtract $1$ to $n$).
+
+$$
+\begin{align}
+m &= \frac{(n - 1)(n - 1 + 1)}{2} \\
+m &= \frac{(n - 1)n}{2} \\
+m &= \frac{n(n - 1)}{2}
+\end{align}
+$$
+
+(_similarly we can also use this to calculate the total number of connections/edges in a fully connected network with_ $k$ _nodes_)
 
 ## Arithmetic Progression Sum
 
