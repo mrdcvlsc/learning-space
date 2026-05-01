@@ -52,7 +52,7 @@ $$
 s = \frac{n(n+1)}{2}
 $$
 
-Given ($n$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), we can find the total ($m$) number of games or total matchups using the n-th triangular number **but we need to subtract $1$ to $n$** first because a player cannot play against itself, or in general each node can connect to every other node except itself (so if you want a connection to itself don't subtract $1$ to $n$).
+Given ($n$) players in a chess tournament (or any 1v1 game) in a round-robin format (each players need to play against all other players), we can find the total ($m$) number of games or total matchups using the n-th triangular number **but we need to subtract $1$ to $n$** first because a player cannot play against itself.
 
 $$
 \begin{align}
@@ -62,7 +62,9 @@ m &= \frac{n(n - 1)}{2}
 \end{align}
 $$
 
-(_similarly we can also use this to calculate the total number of connections/edges in a fully connected network with_ $k$ _nodes_)
+(_similarly we can also use this to calculate the total number of connections/edges in a fully connected network/graph with_ $n$ _nodes and each node strictly has no self connection or self loop._)
+
+(_if you also want to include self loops for all nodes then just don't subtract 1 and use the n-th triangular formula as is._)
 
 ## Arithmetic Progression Sum
 
