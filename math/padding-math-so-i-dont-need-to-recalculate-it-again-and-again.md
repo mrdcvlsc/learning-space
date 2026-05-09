@@ -3,7 +3,7 @@
 so I don't have to recalculate it over and over again if I need it.
 
 > [!WARNING] 
-> Assumes $n$ and $m$ are integers and $m > 0$.
+> Assumes $n$ and $m$ are integers and $n > 0$ and $m > 0$.
 >
 > The modulo operator `%` (symbol might be different in other programming language) for other languages might behave differently in how they treat negative values.
 
@@ -23,6 +23,6 @@ $m - (n \bmod m)$
 > also if your array is already divisible to the block size $m$, this equation will still give you the next number.
 >
 $$
-\text{If } n \bmod m = 0,\quad m + (n \bmod m) = m,\quad\text{so}\quad n^{+} = n + m.
+\text{If } n \bmod m = 0,\quad m - (n \bmod m) = m,\quad\text{so}\quad n^{+} = n + m.
 $$
 
