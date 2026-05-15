@@ -1,36 +1,37 @@
 # Java Containers Cheat Sheet
 *Java Data Structures and Algorithm - Competitive Programming Refresher*
 
-- [Constants & Type Limits](#0-constants--type-limits-)
-- [Primitive Arrays - (contiguous)](#1-raw--primitive-arrays-)
+- [Constants & Type Limits](#0-constants--type-limits)
+- [Primitive Arrays - (contiguous)](#1-raw--primitive-arrays)
 - [Dynamic Arrays - (non-contiguous)](#2-dynamic-arrays-arraylist)
+- [Binary Search On Sorted Asc Array](#2-dynamic-arrays-arraylist)
 - [Linked List](#3-linked-list)
-- [Stacks](#4-stack-arraydeque--preferred-over-legacy-stack-)
-- [Queues](#5-queue-fifo--arraydeque-)
-- [Pairs & Tuples](#6-pair--tuple-)
-- [Utilities for Arrays](#7-arrays-utilities-)
-- [Utilities for Collections](#8-collections-utilities-)
-- [Frequency Counting With Hashmaps - (Multimap like)](#9-frequency-counting-with-hashmap-)
+- [Stacks](#4-stack-arraydeque--preferred-over-legacy-stack)
+- [Queues](#5-queue-fifo--arraydeque)
+- [Pairs & Tuples](#6-pair--tuple)
+- [Utilities for Arrays](#7-arrays-utilities)
+- [Utilities for Collections](#8-collections-utilities)
+- [Frequency Counting With Hashmaps - (Multimap like)](#9-frequency-counting-with-hashmap)
 - [String Builder](#10-stringbuilder)
 - [Ordered & Unordered Sets](#11-set-variants)
 - [Ordered & Unordered Maps](#12-map-variants)
 - [Min Heaps](#13-min-heap-priorityqueue)
 - [Max Heaps](#14-max-heap-priorityqueue-reversed)
-- [Min/Max Heaps With Pairs](#15-priorityqueue-with-pairs--custom-objects-)
-- [Monotonic Dequeue?](#16-monotonic-deque-sliding-window-maxmin-)
+- [Min/Max Heaps With Pairs](#15-priorityqueue-with-pairs--custom-objects)
+- [Monotonic Dequeue](#16-monotonic-deque-sliding-window-maxmin)
 - [Bitsets](#17-bitset)
 - [Big Integers](#18-biginteger)
 
 ---
 
-## ⚠️ CP Quick Notes
+## CP Quick Notes
 - Prefer `offer/poll/peek` over `add/remove/element` in queues/heaps - they return `null`/`false` instead of throwing exceptions.
 - `int[]` pairs beat `Map.Entry` or custom classes for speed and simplicity in CP.
 - All sections use **JDK-only** classes - no external libraries required.
 
 ---
 
-## 0. Constants & Type Limits ⭐
+## 0. Constants & Type Limits
 
 ```java
 // Safe infinity values (avoids overflow on INF + INF)
@@ -46,7 +47,7 @@ long   LONG_MAX = Long.MAX_VALUE;    // ~9.2 * 10^18
 
 ---
 
-## 1. Raw / Primitive Arrays ⭐
+## 1. Raw / Primitive Arrays
 
 > The closest Java gets to a C++ `std::vector<int>` in terms of memory layout.
 > Elements are stored **inline and contiguously** - no boxing, no heap pointers per element.
@@ -107,7 +108,7 @@ int[] a = {3, 1, 4, 1, 5};
 Arrays.sort(a);              // sort asc in-place (dual-pivot quicksort) - O(n log n)
 Arrays.sort(a, 1, 4);        // sort subarray [1, 4) in-place           - O(k log k), k = range size
 
-// ⚠️ PITFALL: Arrays.sort on primitives has NO overload that accepts a Comparator.
+// PITFALL: Arrays.sort on primitives has NO overload that accepts a Comparator.
 // You CANNOT do: Arrays.sort(a, Comparator.reverseOrder()); - compile error.
 // To sort descending you have two options:
 
@@ -118,7 +119,7 @@ for (int i = 0, j = a.length - 1; i < j; i++, j--) {
 }
 
 // Option B: box to Integer[], sort with Comparator, then unbox if needed
-// ⚠️ This defeats the purpose of using primitives - avoid in hot paths.
+// This defeats the purpose of using primitives - avoid in hot paths.
 Integer[] boxed = new Integer[a.length];
 for (int i = 0; i < a.length; i++) boxed[i] = a[i];   // O(n) - boxing cost
 Arrays.sort(boxed, Comparator.reverseOrder());          // O(n log n)
@@ -151,7 +152,7 @@ grid[0][0] = 7;              // write cell                - O(1)
 int rows   = grid.length;    // number of rows            - O(1)
 int cols   = grid[0].length; // number of cols            - O(1)
 
-// ⚠️ PITFALL: rows in a 2D array are separate heap objects.
+// PITFALL: rows in a 2D array are separate heap objects.
 // grid[0], grid[1], grid[2] are pointers to three separate int[] arrays.
 // Accessing grid[r][c] = two pointer hops: one to get row r, one to get element c.
 // This is fine for most CP problems but means 2D arrays are NOT a flat contiguous block.
@@ -160,17 +161,7 @@ int cols   = grid[0].length; // number of cols            - O(1)
 int[] flat = new int[3 * 4];              // O(n*m)
 flat[1 * 4 + 2] = 7;                     // write grid[1][2]  - O(1)
 int v = flat[1 * 4 + 2];                 // read grid[1][2]   - O(1)
-// Helper: inline index formula → row * numCols + col
-```
-
-### Binary search on sorted primitive arrays
-
-```java
-int[] a = {1, 3, 3, 5, 7, 9}; // must be sorted first
-
-int idx = Arrays.binarySearch(a, 5); // O(log n) - exact index, or -(insertionPoint+1) if absent
-// ⚠️ Same caveat as Collections.binarySearch: no guarantee which duplicate is returned.
-// Use the custom lowerBound / upperBound helpers from section 2 for precise control.
+// Helper: inline index formula -> row * numCols + col
 ```
 
 ### Printing for debugging
@@ -182,14 +173,14 @@ int[][] matrix = {{1, 2}, {3, 4}};
 System.out.println(Arrays.toString(a));           // "[1, 2, 3]"         - O(n)
 System.out.println(Arrays.deepToString(matrix));  // "[[1, 2], [3, 4]]"  - O(n*m)
 
-// ⚠️ PITFALL: do NOT use a.toString() or System.out.println(a) -
+// PITFALL: do NOT use a.toString() or System.out.println(a) -
 // these print the identity hashcode (e.g. "[I@6d06d69c"), not the contents.
 ```
 
 ### CP best practices summary
 
 ```
-✅ DO:
+DO:
   - Use int[] / long[] for all fixed-size numeric data - no boxing overhead, cache-friendly.
   - Pre-allocate at maximum possible size (e.g. int[200_005]) rather than resizing.
   - Use a manual `size` variable to track the logical end if you need dynamic behavior.
@@ -197,7 +188,7 @@ System.out.println(Arrays.deepToString(matrix));  // "[[1, 2], [3, 4]]"  - O(n*m
   - Use the reverse-in-place trick for descending sort instead of boxing.
   - Use flat 1D arrays (row * cols + col) for 2D grids in performance-critical code.
 
-❌ DON'T:
+DON'T:
   - Use Integer[] when int[] works - boxing/unboxing adds GC pressure and cache misses.
   - Call a.toString() or print an array directly - use Arrays.toString().
   - Sort a primitive array with a Comparator - it won't compile; box first or sort then reverse.
@@ -208,7 +199,7 @@ System.out.println(Arrays.deepToString(matrix));  // "[[1, 2], [3, 4]]"  - O(n*m
 
 ## 2. Dynamic Arrays (`ArrayList`)
 
-> ⚠️ **Autoboxing and cache-miss warning for CP**
+> **Autoboxing and cache-miss warning for CP**
 >
 > `ArrayList` requires a type parameter, and Java generics do not support primitives.
 > This means `ArrayList<Integer>` stores **boxed `Integer` objects**, not raw `int` values.
@@ -231,11 +222,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 List<Integer> a = new ArrayList<>();    // init
-a.add(10);                              // add to end              - O(1) amortized (autoboxes int → Integer)
+a.add(10);                              // add to end              - O(1) amortized (autoboxes int -> Integer)
 a.add(20);                             // add to end              - O(1) amortized
 a.add(1, 15);                           // insert at index         - O(n) (shifts elements right)
 
-int x = a.get(0);                       // get by index            - O(1) (unboxes Integer → int)
+int x = a.get(0);                       // get by index            - O(1) (unboxes Integer -> int)
 boolean has20 = a.contains(20);         // search                  - O(n)
 int idx = a.indexOf(15);               // first index of value    - O(n)
 
@@ -249,25 +240,41 @@ int size = a.size();                    // size                    - O(1)
 a.clear();                              // clear all elements      - O(n)
 ```
 
-### Binary Search, Lower Bound, Upper Bound, Equal Range
-> ⚠️ List **must be sorted** before calling any of these.
+## 2.5 Binary Search, Lower Bound, Upper Bound, Equal Range
+> List **must be sorted** before calling any of these.
+
+### Binary search on sorted primitive arrays
+
+```java
+int[] a = {1, 3, 3, 5, 7, 9}; // must be sorted first
+
+int idx = Arrays.binarySearch(a, 5); // O(log n) - exact index, or -(insertionPoint+1) if absent
+// Same caveat as Collections.binarySearch: no guarantee which duplicate is returned.
+// Use the custom lowerBound / upperBound helpers from section 2 for precise control.
+```
+
+### Binary Search On ArrayList
 
 ```java
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 List<Integer> a = new ArrayList<>(Arrays.asList(1, 3, 3, 5, 7, 9));
 
 // --- Binary Search ---
 // Returns index of any match, or -(insertionPoint + 1) if not found.
-// ⚠️ If duplicates exist, no guarantee which index is returned.
+// If duplicates exist, no guarantee which index is returned.
 int idx = Collections.binarySearch(a, 3);  // O(log n) - some index where a.get(idx) == 3
 if (idx < 0) {
     // not found; insertion point = -(idx + 1)
     int insertAt = -(idx + 1);
 }
+```
 
-// --- Lower Bound (like std::lower_bound) ---
+### Lower Bound Binary Search - like `std::lower_bound`
+
+```java
 // First index of an element >= target.
 // Returns `n` if all elements are < target.
 static int lowerBound(long[] a, int n, long target) {
@@ -282,8 +289,11 @@ static int lowerBound(long[] a, int n, long target) {
     }
     return l;
 }
+```
 
-// --- Upper Bound (like std::upper_bound) ---
+### Upper Bound Binary Search - like `std::upper_bound`
+
+```java
 // First index of an element > target.
 // Returns `n` if all elements are <= target.
 static int upperBound(long[] a, int n, long target) {
@@ -296,18 +306,16 @@ static int upperBound(long[] a, int n, long target) {
             r = mid;
         }
     }
-
     return l;
 }
+```
 
-// --- Equal Range (like std::equal_range) ---
-// Returns int[]{lo, hi} - the half-open range [lo, hi) where a.get(i) == target.
+### Equal Range Binary Search - like `std::equal_range`
+
+```java
+// Returns int[]{lo, hi} - the half-open range [lo, hi) where arr[i] == target.
 // Range is empty (lo == hi) if target is not found.
-//
-// Faster than calling lowerBound + upperBound separately:
-// Each call does O(log n) comparisons over the full array = 2 * log(n) total.
-// This finds the midpoint first, then runs lowerBound only on the LEFT half
-// and upperBound only on the RIGHT half → ~1.5 * log(n) comparisons.
+// Faster than calling lowerBound + upperBound independently:
 static int[] equalRange(long[] a, int n, long target) {
     int l = 0, r = n;
     while (l < r) {
@@ -331,31 +339,37 @@ static int[] equalRange(long[] a, int n, long target) {
 
     return new int[] { left, right };
 }
+```
 
-// --- Usage examples ---
-// a = [1, 3, 3, 5, 7, 9]
-lowerBound(a, 3);   // O(log n) → 1  (first index where value >= 3)
-upperBound(a, 3);   // O(log n) → 3  (first index where value >  3)
-lowerBound(a, 4);   // O(log n) → 3  (first index where value >= 4, lands on 5)
-upperBound(a, 4);   // O(log n) → 3  (first index where value >  4, lands on 5)
+### Usage Example
 
-int[] range = equalRange(a, 3); // O(log n) → [1, 3)  i.e. range[0]=1, range[1]=3
-int[] empty = equalRange(a, 4); // O(log n) → [3, 3)  i.e. range[0]==range[1] → not found
+```java
+// arr = [1, 3, 3, 5, 7, 9]
+long[] arr = {1, 3, 3, 5, 7, 9};
+int n = arr.length;
+
+lowerBound(arr, n, 3);   // O(log n) -> 1  (first index where value >= 3)
+upperBound(arr, n, 3);   // O(log n) -> 3  (first index where value >  3)
+lowerBound(arr, n, 4);   // O(log n) -> 3  (first index where value >= 4, lands on 5)
+upperBound(arr, n, 4);   // O(log n) -> 3  (first index where value >  4, lands on 5)
+
+int[] range = equalRange(arr, n, 3); // O(log n) -> [1, 3)  i.e. range[0]=1, range[1]=3
+int[] empty = equalRange(arr, n, 4); // O(log n) -> [3, 3)  i.e. range[0]==range[1] -> not found
 
 // Count occurrences of target:
-int count = range[1] - range[0];        // O(1) → 2 (two 3s)
+int count = range[1] - range[0];        // O(1) -> 2 (two 3s)
 
 // Check if target exists:
-boolean exists = range[0] < range[1];   // O(1) → true
+boolean exists = range[0] < range[1];   // O(1) -> true
 
 // Iterate over all matching elements:
 for (int i = range[0]; i < range[1]; i++) {
-    // a.get(i) == target                // O(1) per access
+    // arr[i] == target                  // O(1) per access
 }
 
 // Check if target exists (using lowerBound directly):
-int lb = lowerBound(a, 3);                         // O(log n)
-boolean found = lb < a.size() && a.get(lb) == 3;  // O(1) → true
+int lb = lowerBound(arr, n, 3);            // O(log n)
+boolean found = lb < n && arr[lb] == 3;   // O(1) -> true
 ```
 
 ---
@@ -401,12 +415,12 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 Deque<Integer> st = new ArrayDeque<>();
-st.push(10);                    // push to top             - O(1)
-st.push(20);                    // push to top             - O(1)
-Integer top = st.peek();        // peek top (20)           - O(1), returns null if empty
-int popped  = st.pop();         // pop top (20)            - O(1), throws NoSuchElementException if empty
-boolean empty = st.isEmpty();   // check empty             - O(1)
-int size    = st.size();        // size                    - O(1)
+st.push(10);                      // push to top             - O(1)
+st.push(20);                      // push to top             - O(1)
+Integer top    = st.peek();       // peek top (20)           - O(1), returns null if empty
+Integer popped = st.pop();        // pop top (20)            - O(1), throws NoSuchElementException if empty
+boolean empty  = st.isEmpty();    // check empty             - O(1)
+int size       = st.size();       // size                    - O(1)
 ```
 
 ---
@@ -418,17 +432,17 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 Queue<Integer> q = new ArrayDeque<>();
-q.offer(1);                 // enqueue                 - O(1), returns false if fails (prefer over add())
-q.offer(2);                 // enqueue                 - O(1)
-Integer head   = q.peek();  // peek front              - O(1), returns null if empty
-Integer polled = q.poll();  // dequeue                 - O(1), returns null if empty (prefer over remove())
-boolean empty  = q.isEmpty(); // check empty           - O(1)
-int size       = q.size();    // size                  - O(1)
+q.offer(1);                   // enqueue                 - O(1), returns false if fails (prefer over add())
+q.offer(2);                   // enqueue                 - O(1)
+Integer head   = q.peek();    // peek front              - O(1), returns null if empty
+Integer polled = q.poll();    // dequeue                 - O(1), returns null if empty (prefer over remove())
+boolean empty  = q.isEmpty(); // check empty             - O(1)
+int size       = q.size();    // size                    - O(1)
 ```
 
 ---
 
-## 6. Pair / Tuple ⭐
+## 6. Pair / Tuple
 > Java has no built-in `Pair`. These are your options, ranked for CP use.
 
 ---
@@ -451,7 +465,7 @@ int second = pair[1];   // read second element     - O(1)
 pairs.sort((a, b) -> a[0] - b[0]);                                     // by first asc              - O(n log n)
 pairs.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);      // by first, then second     - O(n log n)
 pairs.sort((a, b) -> Integer.compare(b[0], a[0]));                     // by first desc             - O(n log n)
-// ⚠️ Use Integer.compare() / Long.compare() when values may overflow int subtraction
+// Use Integer.compare() / Long.compare() when values may overflow int subtraction
 ```
 
 ---
@@ -506,7 +520,7 @@ pairs.sort(Map.Entry.<Integer, Integer>comparingByKey()
 
 ---
 
-## 7. Arrays Utilities ⭐
+## 7. Arrays Utilities
 
 ```java
 import java.util.Arrays;
@@ -517,7 +531,7 @@ int[] a = {3, 1, 4, 1, 5};
 Arrays.sort(a);                             // sort primitive array asc      - O(n log n)
 Arrays.sort(a, 0, 3);                       // sort subarray [0, 3)          - O(k log k), k = range size
 
-// ⚠️ Reverse sort requires boxed Integer[], NOT int[]
+// Reverse sort requires boxed Integer[], NOT int[]
 Integer[] b = {3, 1, 4};
 Arrays.sort(b, Comparator.reverseOrder());  // sort desc                     - O(n log n)
 Arrays.sort(b, (x, y) -> y - x);           // sort desc (same effect)       - O(n log n)
@@ -541,7 +555,7 @@ System.out.println(Arrays.deepToString(matrix)); // print 2D array           - O
 
 ---
 
-## 8. Collections Utilities ⭐
+## 8. Collections Utilities
 
 ```java
 import java.util.Collections;
@@ -568,7 +582,7 @@ List<Integer> zeros = new ArrayList<>(Collections.nCopies(5, 0)); // O(n)
 
 ---
 
-## 9. Frequency Counting with `HashMap` ⭐
+## 9. Frequency Counting with `HashMap`
 
 ```java
 import java.util.HashMap;
@@ -630,10 +644,10 @@ ts.add(9);                               // insert               - O(log n)
 boolean hasFive = ts.contains(5);        // membership test      - O(log n)
 Integer smallest  = ts.first();          // smallest element     - O(log n)
 Integer largest   = ts.last();           // largest element      - O(log n)
-Integer floor     = ts.floor(6);         // largest element <= 6 - O(log n) ⭐
-Integer ceiling   = ts.ceiling(6);       // smallest element >= 6- O(log n) ⭐
-Integer lower     = ts.lower(5);         // largest element < 5  - O(log n) ⭐
-Integer higher    = ts.higher(5);        // smallest element > 5 - O(log n) ⭐
+Integer floor     = ts.floor(6);         // largest element <= 6 - O(log n)
+Integer ceiling   = ts.ceiling(6);       // smallest element >= 6- O(log n)
+Integer lower     = ts.lower(5);         // largest element < 5  - O(log n)
+Integer higher    = ts.higher(5);        // smallest element > 5 - O(log n)
 ts.remove(5);                            // delete               - O(log n)
 int tsSize = ts.size();                  // size                 - O(1)
 
@@ -658,7 +672,7 @@ import java.util.Map;
 
 Map<String, Integer> hm = new HashMap<>();
 hm.put("x", 1);                        // insert / overwrite      - O(1) average
-int val  = hm.getOrDefault("x", 0);    // get (with default)      - O(1) average ⭐
+int val  = hm.getOrDefault("x", 0);    // get (with default)      - O(1) average
 boolean has = hm.containsKey("y");     // key existence test      - O(1) average
 hm.remove("x");                        // delete by key           - O(1) average
 hm.putIfAbsent("z", 3);               // insert only if absent   - O(1) average
@@ -677,15 +691,15 @@ tm.put(1, 10);                       // insert / overwrite        - O(log n)
 tm.put(3, 30);                       // insert / overwrite        - O(log n)
 tm.put(5, 50);                       // insert / overwrite        - O(log n)
 
-int v = tm.getOrDefault(1, 0);       // get (with default) ⭐     - O(log n) (get() can return null → NPE)
+int v = tm.getOrDefault(1, 0);       // get (with default)        - O(log n) (get() can return null -> NPE)
 tm.putIfAbsent(2, 20);               // insert only if absent     - O(log n)
 boolean tmHas = tm.containsKey(3);   // key existence test        - O(log n)
 
-// Closest-key operations ⭐ - all O(log n)
-Integer floorKey   = tm.floorKey(4);      // largest key <= 4        - O(log n) → 3
-Integer ceilingKey = tm.ceilingKey(4);    // smallest key >= 4       - O(log n) → 5
-Integer lowerKey   = tm.lowerKey(3);      // largest key < 3         - O(log n) → 1
-Integer higherKey  = tm.higherKey(3);     // smallest key > 3        - O(log n) → 5
+// Closest-key operations - all O(log n)
+Integer floorKey   = tm.floorKey(4);      // largest key <= 4        - O(log n) -> 3
+Integer ceilingKey = tm.ceilingKey(4);    // smallest key >= 4       - O(log n) -> 5
+Integer lowerKey   = tm.lowerKey(3);      // largest key < 3         - O(log n) -> 1
+Integer higherKey  = tm.higherKey(3);     // smallest key > 3        - O(log n) -> 5
 
 Map.Entry<Integer, Integer> floorEntry   = tm.floorEntry(4);   // entry with largest key <= 4    - O(log n)
 Map.Entry<Integer, Integer> ceilingEntry = tm.ceilingEntry(4); // entry with smallest key >= 4   - O(log n)
@@ -696,7 +710,7 @@ tm.remove(1);                        // delete by key             - O(log n)
 int tmSize = tm.size();              // size                      - O(1)
 ```
 
-### Multimap (JDK-only - Map→List)
+### Multimap (JDK-only - Map to List)
 
 ```java
 Map<String, List<String>> mm = new HashMap<>();
@@ -738,15 +752,15 @@ maxHeap.offer(5);  // insert                  - O(log n)
 maxHeap.offer(1);  // insert                  - O(log n)
 maxHeap.offer(3);  // insert                  - O(log n)
 
-Integer max = maxHeap.peek();      // read maximum (no remove)  - O(1),     returns null if empty
-maxHeap.poll();                    // remove and return maximum - O(log n), returns null if empty
-int size    = maxHeap.size();      // size                      - O(1)
-boolean empty = maxHeap.isEmpty(); // check empty               - O(1)
+Integer max     = maxHeap.peek();    // read maximum (no remove)  - O(1),     returns null if empty
+Integer removed = maxHeap.poll();    // remove and return maximum - O(log n), returns null if empty
+int size        = maxHeap.size();    // size                      - O(1)
+boolean empty   = maxHeap.isEmpty(); // check empty               - O(1)
 ```
 
 ---
 
-## 15. PriorityQueue with Pairs / Custom Objects ⭐
+## 15. PriorityQueue with Pairs / Custom Objects
 
 ```java
 // Min-heap by first element of int[2] - classic Dijkstra pattern
@@ -755,22 +769,23 @@ PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
 pq.offer(new int[]{dist, node}); // insert {dist, node}       - O(log n)
 int[] top = pq.poll();           // remove min-dist entry     - O(log n) - top[0] = dist, top[1] = node
 
-// ⚠️ If values can overflow int (e.g. long distances), use Long.compare:
+// If values can overflow int (e.g. long distances), use Long.compare:
 PriorityQueue<long[]> pq2 = new PriorityQueue<>((a, b) -> Long.compare(a[0], b[0]));
 pq2.offer(new long[]{dist, node}); // insert {dist, node}     - O(log n) - same placeholder names, now long
 
 // Custom class comparator
 // For reference types, prefer Comparator.comparingInt (avoids boxing):
 PriorityQueue<Person> pq3 = new PriorityQueue<>(Comparator.comparingInt(p -> p.age));
-pq3.offer(person);               // insert by age asc         - O(log n)
-
 PriorityQueue<Person> pq4 = new PriorityQueue<>(Comparator.comparingInt((Person p) -> p.age).reversed());
+
+Person person = new Person("Alice", 30); // placeholder - replace with your actual object
+pq3.offer(person);               // insert by age asc         - O(log n)
 pq4.offer(person);               // insert by age desc        - O(log n)
 ```
 
 ---
 
-## 16. Monotonic Deque (Sliding Window Max/Min) ⭐
+## 16. Monotonic Deque (Sliding Window Max/Min)
 
 ```java
 import java.util.ArrayDeque;
