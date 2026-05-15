@@ -249,7 +249,7 @@ int size = a.size();                    // size                    - O(1)
 a.clear();                              // clear all elements      - O(n)
 ```
 
-### Binary Search, Lower Bound, Upper Bound
+### Binary Search, Lower Bound, Upper Bound, Equal Range
 > ⚠️ List **must be sorted** before calling any of these.
 
 ```java
@@ -269,28 +269,35 @@ if (idx < 0) {
 
 // --- Lower Bound (like std::lower_bound) ---
 // First index of an element >= target.
-// Returns a.size() if all elements are < target.
-static int lowerBound(List<Integer> a, int target) {
-    int lo = 0, hi = a.size();
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (a.get(mid) < target) lo = mid + 1;
-        else                     hi = mid;
+// Returns `n` if all elements are < target.
+static int lowerBound(long[] a, int n, long target) {
+    int l = 0, r = n;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (a[mid] < target) {
+            l = mid + 1;
+        } else {
+            r = mid;
+        }
     }
-    return lo; // a.get(lo) is first element >= target
+    return l;
 }
 
 // --- Upper Bound (like std::upper_bound) ---
 // First index of an element > target.
-// Returns a.size() if all elements are <= target.
-static int upperBound(List<Integer> a, int target) {
-    int lo = 0, hi = a.size();
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if (a.get(mid) <= target) lo = mid + 1;
-        else                      hi = mid;
+// Returns `n` if all elements are <= target.
+static int upperBound(long[] a, int n, long target) {
+    int l = 0, r = n;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (a[mid] <= target) {
+            l = mid + 1;
+        } else {
+            r = mid;
+        }
     }
-    return lo; // a.get(lo) is first element > target
+
+    return l;
 }
 
 // --- Equal Range (like std::equal_range) ---
@@ -301,39 +308,28 @@ static int upperBound(List<Integer> a, int target) {
 // Each call does O(log n) comparisons over the full array = 2 * log(n) total.
 // This finds the midpoint first, then runs lowerBound only on the LEFT half
 // and upperBound only on the RIGHT half → ~1.5 * log(n) comparisons.
-static int[] equalRange(List<Integer> a, int target) {
-    int lo = 0, hi = a.size();
-
-    // Phase 1: narrow down to any index where a.get(mid) == target
-    while (lo < hi) {
-        int mid = lo + (hi - lo) / 2;
-        if      (a.get(mid) < target) lo = mid + 1;
-        else if (a.get(mid) > target) hi = mid;
-        else {
-            // Phase 2: target found at mid.
-            // Run lowerBound only within [lo, mid]
-            // and upperBound only within [mid+1, hi].
-            int left = lo,      leftHi  = mid;
-            int right = mid + 1, rightHi = hi;
-
-            // lowerBound on left half [lo, mid]
-            while (left < leftHi) {
-                int m = left + (leftHi - left) / 2;
-                if (a.get(m) < target) left = m + 1;
-                else                   leftHi = m;
-            }
-
-            // upperBound on right half [mid+1, hi]
-            while (right < rightHi) {
-                int m = right + (rightHi - right) / 2;
-                if (a.get(m) <= target) right = m + 1;
-                else                    rightHi = m;
-            }
-
-            return new int[]{ left, right };
-        }
+static int[] equalRange(long[] a, int n, long target) {
+    int l = 0, r = n;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (a[mid] < target)
+            l = mid + 1;
+        else
+            r = mid;
     }
-    return new int[]{ lo, lo }; // target not found → empty range [lo, lo)
+    int left = l;
+
+    r = n;
+    while (l < r) {
+        int mid = (l + r) / 2;
+        if (a[mid] <= target)
+            l = mid + 1;
+        else
+            r = mid;
+    }
+    int right = l;
+
+    return new int[] { left, right };
 }
 
 // --- Usage examples ---
