@@ -4,7 +4,7 @@
 - [Constants & Type Limits](#0-constants--type-limits)
 - [Primitive Arrays - (contiguous)](#1-raw--primitive-arrays)
 - [Dynamic Arrays - (non-contiguous)](#2-dynamic-arrays-arraylist)
-- [Binary Search On Sorted Asc Array](#2-dynamic-arrays-arraylist)
+- [Binary Search On Sorted Asc Array](#25-binary-search-lower-bound-upper-bound-equal-range)
 - [Linked List](#3-linked-list)
 - [Stacks](#4-stack-arraydeque--preferred-over-legacy-stack)
 - [Queues](#5-queue-fifo--arraydeque)
