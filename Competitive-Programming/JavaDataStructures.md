@@ -600,6 +600,7 @@ int c = freq.getOrDefault("apple", 0);                 // get count (0 if absent
 // Decrement / remove
 freq.merge("apple", -1, Integer::sum);                 // decrement by 1          - O(1) average
 freq.remove("apple");                                   // remove key entirely     - O(1) average
+
 ```
 
 ---
@@ -618,6 +619,7 @@ sb.setCharAt(1, 'z');          // overwrite one char     - O(1)
 char c   = sb.charAt(1);       // read one char          - O(1)
 int len  = sb.length();        // current length         - O(1)
 String result = sb.toString(); // convert to String      - O(n)
+
 ```
 
 ---
@@ -628,6 +630,7 @@ String result = sb.toString(); // convert to String      - O(n)
 import java.util.HashSet;
 import java.util.TreeSet;
 import java.util.LinkedHashSet;
+import java.util.Iterator;
 
 // HashSet - unordered, backed by hash table
 Set<String> hs = new HashSet<>();
@@ -651,6 +654,13 @@ Integer higher    = ts.higher(5);        // smallest element > 5 - O(log n)
 ts.remove(5);                            // delete               - O(log n)
 int tsSize = ts.size();                  // size                 - O(1)
 
+// Iterator Navigation vs. NavigableSet Methods
+Iterator<Integer> tsIt = ts.iterator();  // get iterator         - O(1)
+tsIt.hasNext();                          // check if next exists - O(1)
+Integer nextVal = tsIt.next();           // advance to next      - O(1) amortized (O(log n) worst-case)
+// Note: higher()/lower()/ceiling()/floor() search from the tree root -> strict O(log n)
+// iterator.next() moves sequentially from the current node pointer  -> amortized O(1)
+
 // LinkedHashSet - insertion-ordered, backed by hash table + linked list
 Set<String> ins = new LinkedHashSet<>();
 ins.add("b");                   // insert (preserves order) - O(1) average
@@ -658,6 +668,7 @@ ins.add("a");                   // insert (preserves order) - O(1) average
 ins.contains("a");              // membership test          - O(1) average
 ins.remove("a");                // delete                   - O(1) average
 int insSize = ins.size();       // size                     - O(1)
+
 ```
 
 ---
@@ -678,6 +689,7 @@ hm.remove("x");                        // delete by key           - O(1) average
 hm.putIfAbsent("z", 3);               // insert only if absent   - O(1) average
 hm.computeIfAbsent("z", k -> 42);     // compute value if absent - O(1) average
 int hmSize = hm.size();                // size                    - O(1)
+
 ```
 
 ### Sorted (`TreeMap`)
@@ -685,6 +697,7 @@ int hmSize = hm.size();                // size                    - O(1)
 ```java
 import java.util.TreeMap;
 import java.util.Map;
+import java.util.Iterator;
 
 TreeMap<Integer, Integer> tm = new TreeMap<>();
 tm.put(1, 10);                       // insert / overwrite        - O(log n)
@@ -708,6 +721,14 @@ Integer firstKey = tm.firstKey();    // smallest key              - O(log n)
 Integer lastKey  = tm.lastKey();     // largest key               - O(log n)
 tm.remove(1);                        // delete by key             - O(log n)
 int tmSize = tm.size();              // size                      - O(1)
+
+// Iterator Navigation vs. NavigableMap Methods
+Iterator<Map.Entry<Integer, Integer>> tmIt = tm.entrySet().iterator(); 
+tmIt.hasNext();                      // check if next exists - O(1)
+Map.Entry<Integer, Integer> nxt = tmIt.next(); // advance to next entry - O(1) amortized (O(log n) worst-case)
+// Note: higherKey()/lowerKey()/ceilingKey()/floorKey() search from the tree root -> strict O(log n)
+// iterator.next() moves sequentially from the current node pointer              -> amortized O(1)
+
 ```
 
 ### Multimap (JDK-only - Map to List)
@@ -719,6 +740,7 @@ mm.computeIfAbsent("k1", k -> new ArrayList<>()).add("v2"); // computeIfAbsent: 
 
 List<String> vals = mm.getOrDefault("k1", List.of()); // HashMap.getOrDefault: O(1) average
 mm.get("k1").remove("v1");                            // HashMap.get: O(1) average; ArrayList.remove by object: O(n)
+
 ```
 
 ---
