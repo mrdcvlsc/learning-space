@@ -280,7 +280,8 @@ if (idx < 0) {
 static int lowerBound(long[] a, int n, long target) {
     int l = 0, r = n;
     while (l < r) {
-        int mid = (l + r) / 2;
+        // int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2; // much less prone to overflows
         if (a[mid] < target) {
             l = mid + 1;
         } else {
@@ -299,7 +300,8 @@ static int lowerBound(long[] a, int n, long target) {
 static int upperBound(long[] a, int n, long target) {
     int l = 0, r = n;
     while (l < r) {
-        int mid = (l + r) / 2;
+        // int mid = (l + r) / 2;
+        int mid = l + (r - l) / 2; // much less prone to overflows
         if (a[mid] <= target) {
             l = mid + 1;
         } else {
