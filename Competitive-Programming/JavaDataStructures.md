@@ -9,6 +9,7 @@
 - [Stacks](#4-stack-arraydeque--preferred-over-legacy-stack)
 - [Queues](#5-queue-fifo--arraydeque)
 - [Pairs & Tuples](#6-pair--tuple)
+- [Custom Pair/Tuple as Map & Set Keys](#65-custom-pair--tuple-as-map--set-keys)
 - [Utilities for Arrays](#7-arrays-utilities)
 - [Utilities for Collections](#8-collections-utilities)
 - [Frequency Counting With Hashmaps - (Multimap like)](#9-frequency-counting-with-hashmap)
@@ -518,6 +519,225 @@ pairs.sort(Map.Entry.<Integer, Integer>comparingByKey().reversed());            
 pairs.sort(Map.Entry.comparingByKey(Comparator.comparingInt(k -> k)));               // by key asc (explicit)     - O(n log n)
 pairs.sort(Map.Entry.<Integer, Integer>comparingByKey()
            .thenComparing(Map.Entry.comparingByValue()));                             // by key, then value        - O(n log n)
+```
+
+---
+
+## 6.5 Custom Pair / Tuple as Map & Set Keys
+
+> Depending on which container you target, you need different things:
+> - **`HashMap` / `HashSet`** → `equals()` + `hashCode()` (so the hash table can bucket and compare)
+> - **`TreeMap` / `TreeSet`** → a consistent ordering via `Comparable` (or a `Comparator`)
+> - **All four at once** → implement both `Comparable` AND override `equals()`/`hashCode()`
+
+---
+
+### Option A: `record` — best default (Java 16+)
+
+> `record` auto-generates `equals()` and `hashCode()` from its components — works in `HashMap`/`HashSet` out of the box.
+> Add `implements Comparable` to also support `TreeMap`/`TreeSet`.
+
+```java
+// --- Define once, outside your method ---
+
+// For HashMap / HashSet only (equals + hashCode come free with record)
+record Pair(int x, int y) {}
+
+// For ALL four containers: add Comparable
+record PairC(int x, int y) implements Comparable<PairC> {
+    @Override
+    public int compareTo(PairC o) {
+        if (this.x != o.x) return Integer.compare(this.x, o.x); // sort by x asc
+        return Integer.compare(this.y, o.y);                     // then by y asc
+    }
+}
+```
+
+```java
+// --- HashMap: O(1) average put/get ---
+Map<Pair, String> hashMap = new HashMap<>();
+hashMap.put(new Pair(1, 2), "a");          // insert              - O(1) average
+hashMap.put(new Pair(3, 4), "b");          // insert              - O(1) average
+String val = hashMap.get(new Pair(1, 2));  // lookup "a"          - O(1) average
+boolean has = hashMap.containsKey(new Pair(3, 4)); // true        - O(1) average
+
+// --- HashSet: O(1) average add/contains ---
+Set<Pair> hashSet = new HashSet<>();
+hashSet.add(new Pair(1, 2));               // insert              - O(1) average
+hashSet.add(new Pair(1, 2));               // duplicate - ignored - O(1) average
+boolean inSet = hashSet.contains(new Pair(1, 2)); // true         - O(1) average
+int size = hashSet.size();                 // 1                   - O(1)
+
+// --- TreeMap: sorted by PairC.compareTo - O(log n) per op ---
+TreeMap<PairC, String> treeMap = new TreeMap<>();
+treeMap.put(new PairC(3, 4), "b");        // insert              - O(log n)
+treeMap.put(new PairC(1, 2), "a");        // insert              - O(log n)
+treeMap.put(new PairC(1, 9), "c");        // insert              - O(log n)
+PairC firstKey = treeMap.firstKey();      // PairC(1, 2) - min   - O(log n)
+PairC lastKey  = treeMap.lastKey();       // PairC(3, 4) - max   - O(log n)
+
+// Closest-key lookups
+PairC floor   = treeMap.floorKey(new PairC(2, 0));   // largest key <= (2,0) -> (1,9)  - O(log n)
+PairC ceiling = treeMap.ceilingKey(new PairC(2, 0)); // smallest key >= (2,0) -> (3,4) - O(log n)
+
+// --- TreeSet: sorted by PairC.compareTo - O(log n) per op ---
+TreeSet<PairC> treeSet = new TreeSet<>();
+treeSet.add(new PairC(3, 4));             // insert              - O(log n)
+treeSet.add(new PairC(1, 2));             // insert              - O(log n)
+treeSet.add(new PairC(1, 2));             // duplicate - ignored - O(log n)
+PairC smallest = treeSet.first();         // PairC(1, 2)         - O(log n)
+PairC largest  = treeSet.last();          // PairC(3, 4)         - O(log n)
+PairC higher   = treeSet.higher(new PairC(1, 2)); // PairC(3, 4) - O(log n)
+```
+
+---
+
+### Option B: Manual class — full control, works on all Java versions
+
+> Override `equals()` + `hashCode()` manually for `HashMap`/`HashSet`.
+> Implement `Comparable` for `TreeMap`/`TreeSet`.
+>
+> **Pitfall**: if you implement `Comparable`, its ordering MUST be consistent with `equals()`:
+> `compareTo(o) == 0` ⟺ `equals(o) == true`. Violating this breaks `TreeMap`/`TreeSet`.
+
+```java
+// --- Define once, outside your method ---
+static class Pair implements Comparable<Pair> {
+    int x, y;
+    Pair(int x, int y) { this.x = x; this.y = y; }
+
+    // Required for HashMap / HashSet
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pair)) return false;
+        Pair p = (Pair) o;
+        return this.x == p.x && this.y == p.y;
+    }
+
+    // Required for HashMap / HashSet
+    // Rule: if a.equals(b), then a.hashCode() == b.hashCode() MUST hold.
+    @Override
+    public int hashCode() {
+        return 31 * x + y;                 // simple polynomial hash - fast, good spread for small values
+        // Alternatively, use Objects.hash(x, y) for cleaner code (slight boxing overhead):
+        // return Objects.hash(x, y);
+    }
+
+    // Required for TreeMap / TreeSet (must be consistent with equals)
+    @Override
+    public int compareTo(Pair o) {
+        if (this.x != o.x) return Integer.compare(this.x, o.x);
+        return Integer.compare(this.y, o.y);
+    }
+
+    @Override
+    public String toString() { return "(" + x + ", " + y + ")"; }
+}
+```
+
+```java
+// --- HashMap ---
+Map<Pair, Integer> hashMap = new HashMap<>();
+hashMap.put(new Pair(1, 2), 10);                      // insert              - O(1) average
+hashMap.put(new Pair(3, 4), 20);                      // insert              - O(1) average
+int v = hashMap.getOrDefault(new Pair(1, 2), -1);     // 10                 - O(1) average
+hashMap.remove(new Pair(3, 4));                        // delete             - O(1) average
+
+// --- HashSet ---
+Set<Pair> hashSet = new HashSet<>();
+hashSet.add(new Pair(1, 2));                           // insert             - O(1) average
+hashSet.add(new Pair(1, 2));                           // duplicate - ignored- O(1) average
+boolean inSet = hashSet.contains(new Pair(1, 2));      // true              - O(1) average
+int size = hashSet.size();                             // 1                  - O(1)
+
+// --- TreeMap ---
+TreeMap<Pair, Integer> treeMap = new TreeMap<>();
+treeMap.put(new Pair(1, 9), 30);                      // insert             - O(log n)
+treeMap.put(new Pair(1, 2), 10);                      // insert             - O(log n)
+treeMap.put(new Pair(3, 4), 20);                      // insert             - O(log n)
+
+// Iteration is in sorted order: (1,2) -> (1,9) -> (3,4)
+for (Map.Entry<Pair, Integer> e : treeMap.entrySet()) {
+    System.out.println(e.getKey() + " -> " + e.getValue()); // O(n) total
+}
+
+Pair firstKey = treeMap.firstKey();                   // (1, 2) - minimum   - O(log n)
+Pair lastKey  = treeMap.lastKey();                    // (3, 4) - maximum   - O(log n)
+
+// --- TreeSet ---
+TreeSet<Pair> treeSet = new TreeSet<>();
+treeSet.add(new Pair(3, 4));                          // insert             - O(log n)
+treeSet.add(new Pair(1, 2));                          // insert             - O(log n)
+treeSet.add(new Pair(1, 9));                          // insert             - O(log n)
+
+// Iteration is in sorted order: (1,2) -> (1,9) -> (3,4)
+for (Pair p : treeSet) System.out.println(p);         // O(n) total
+
+Pair smallest = treeSet.first();                      // (1, 2)            - O(log n)
+Pair floor    = treeSet.floor(new Pair(2, 0));        // (1, 9)            - O(log n)
+Pair ceiling  = treeSet.ceiling(new Pair(2, 0));      // (3, 4)            - O(log n)
+```
+
+---
+
+### Option C: External `Comparator` (no `Comparable` needed for Tree containers)
+
+> Use when you can't or don't want to modify the class itself,
+> or when you need a different sort order than `compareTo` provides.
+> **Cannot** replace `equals()`/`hashCode()` — those are still needed for `HashMap`/`HashSet`.
+
+```java
+// Sort by y desc, then x asc - without touching the Pair class
+Comparator<Pair> byYDescThenXAsc =
+    Comparator.comparingInt((Pair p) -> p.y).reversed()
+              .thenComparingInt(p -> p.x);
+
+TreeMap<Pair, Integer> treeMap = new TreeMap<>(byYDescThenXAsc);
+treeMap.put(new Pair(1, 9), 1);    // O(log n)
+treeMap.put(new Pair(3, 4), 2);    // O(log n)
+treeMap.put(new Pair(1, 2), 3);    // O(log n)
+// Iteration order (by y desc): (1,9) -> (3,4) -> (1,2)
+
+TreeSet<Pair> treeSet = new TreeSet<>(byYDescThenXAsc);
+treeSet.add(new Pair(1, 9));       // O(log n)
+treeSet.add(new Pair(3, 4));       // O(log n)
+treeSet.add(new Pair(1, 2));       // O(log n)
+// Iteration order: (1,9) -> (3,4) -> (1,2)
+
+// PITFALL: TreeMap/TreeSet use comparator.compare(a, b) == 0 to decide equality,
+// NOT equals(). So if your comparator says two objects are equal but equals() disagrees,
+// the second one will silently overwrite / be rejected. Keep them consistent.
+```
+
+---
+
+### Quick Reference — What Each Container Needs
+
+```
+Container   | Needs                           | Purpose
+------------|---------------------------------|-------------------------------------
+HashMap     | equals() + hashCode()           | hash bucket placement & key equality
+HashSet     | equals() + hashCode()           | same as HashMap (backed by one)
+TreeMap     | Comparable OR Comparator        | determines key ordering
+TreeSet     | Comparable OR Comparator        | same as TreeMap (backed by one)
+All four    | equals()+hashCode()+Comparable  | safest: consistent across all containers
+```
+
+```
+DO:
+  - Use `record` when on Java 16+ - equals/hashCode are generated for free.
+  - Always make equals() and compareTo() consistent: a.compareTo(b)==0 iff a.equals(b).
+  - Use Objects.hash(x, y) for cleaner hashCode() when boxing overhead is acceptable.
+  - Use an external Comparator on TreeMap/TreeSet when you need ad-hoc ordering.
+
+DON'T:
+  - Use `int[]` as a HashMap/HashSet key - arrays use identity hashCode (memory address),
+    so new int[]{1,2} and new int[]{1,2} are NEVER equal as keys.
+  - Forget hashCode() when overriding equals() - HashMap/HashSet will silently break
+    (two "equal" keys hash to different buckets and both get stored).
+  - Use a Comparator that is inconsistent with equals() in Tree containers -
+    duplicate logical keys will appear or entries will silently overwrite.
 ```
 
 ---
